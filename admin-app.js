@@ -61,4 +61,40 @@ function formatDateTimeLocal(date) {
     const day = String(date.getDate()).padStart(2, '0');
     const hours = String(date.getHours()).padStart(2, '0');
     const minutes = String(date.getMinutes()).padStart(2, '0');
-    return `${year}-${month}-${day}T${hours}:${
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
+}
+
+// SIDEBAR - FIXED: WALA NA TINATAGO YUNG CARDS
+window.toggleSidebar = function() {
+    document.getElementById('sidebar').classList.toggle('expanded');
+}
+
+// FIXED: May element parameter na
+window.showSection = function(section, element) {
+    // Hide all sections
+    document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+    // Show selected section
+    document.getElementById(section + '-section').classList.add('active');
+    // Update sidebar active state
+    document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+    if (element) element.classList.add('active');
+    // Close sidebar on mobile
+    if (window.innerWidth < 768) document.getElementById('sidebar').classList.remove('expanded');
+    // Load chart if charts section
+    if (section === 'charts') loadChart();
+}
+
+// THEME
+window.toggleTheme = function() {
+    const html = document.documentElement;
+    const current = html.getAttribute('data-theme');
+    const newTheme = current === 'dark'? 'light' : 'dark';
+    html.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    document.getElementById('themeIcon').className = newTheme === 'dark'? 'fas fa-sun' : 'fas fa-moon';
+}
+
+window.changeTheme = function() {
+    const theme = document.getElementById('themePicker').value;
+    document.documentElement.setAttribute('data-theme', theme);
+    local
