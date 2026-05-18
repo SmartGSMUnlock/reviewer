@@ -1,481 +1,1747 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - AL Gadget Repair</title>
-    <meta name="theme-color" content="#1e293b">
-    <link rel="manifest" href="manifest.json">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <title>LET Elementary 2026 - FULL REVIEWER 150 Items with Answers</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-
-        :root {
-            --bg-primary: #0f172a;
-            --bg-secondary: #1e293b;
-            --bg-card: #293548;
-            --bg-hover: #334155;
-            --text-primary: #f1f5f9;
-            --text-secondary: #cbd5e1;
-            --text-muted: #94a3b8;
-            --accent: #3b82f6;
-            --success: #22c55e;
-            --danger: #ef4444;
-            --warning: #f59e0b;
-            --purple: #8b5cf6;
-            --border: #334155;
-            --shadow: 0 4px 6px -1px rgba(0,0,0,0.3);
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: #f5f5f5; padding: 20px; line-height: 1.6; }
+       .container { max-width: 1000px; margin: 0 auto; background: white; border-radius: 10px; padding: 30px; }
+        h1 { text-align: center; color: #1a365d; margin-bottom: 10px; }
+       .subtitle { text-align: center; color: #4a5568; margin-bottom: 30px; }
+       .controls { text-align: center; margin-bottom: 20px; position: sticky; top: 10px; background: white; padding: 10px; z-index: 100; }
+       .controls button {
+            padding: 10px 20px; margin: 5px; border: none; border-radius: 5px;
+            background: #2b6cb0; color: white; cursor: pointer; font-weight: bold;
         }
-
-        [data-theme="light"] {
-            --bg-primary: #f8fafc;
-            --bg-secondary: #ffffff;
-            --bg-card: #ffffff;
-            --bg-hover: #f1f5f9;
-            --text-primary: #0f172a;
-            --text-secondary: #475569;
-            --text-muted: #64748b;
-            --border: #e2e8f0;
-            --shadow: 0 1px 3px 0 rgba(0,0,0,0.1);
+       .controls button.active { background: #2c5282; }
+       .section-title {
+            background: #2b6cb0; color: white; padding: 15px; margin: 30px 0 15px 0;
+            border-radius: 5px; font-size: 20px; font-weight: bold;
         }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        body { background: var(--bg-primary); color: var(--text-primary); min-height: 100vh; }
-
-       .topnav {
-            background: var(--bg-secondary); padding: 0 24px; height: 64px; display: flex;
-            justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border);
-            position: sticky; top: 0; z-index: 100;
+       .question-box {
+            background: #f7fafc; border-left: 4px solid #4299e1; padding: 20px;
+            margin-bottom: 20px; border-radius: 5px; page-break-inside: avoid;
         }
-       .nav-left { display: flex; align-items: center; gap: 16px; }
-       .menu-toggle { background: transparent; border: none; color: var(--text-primary); font-size: 20px; cursor: pointer; padding: 8px; border-radius: 8px; }
-       .menu-toggle:hover { background: var(--bg-hover); }
-       .logo { display: flex; align-items: center; gap: 12px; }
-       .logo-icon { background: linear-gradient(135deg, #3b82f6, #8b5cf6); width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
-       .logo h1 { font-size: 16px; font-weight: 700; }
-       .logo p { font-size: 11px; color: var(--text-muted); margin-top: -2px; }
-
-       .nav-right { display: flex; align-items: center; gap: 10px; }
-       .icon-btn {
-            background: var(--bg-card); border: 1px solid var(--border); color: var(--text-primary);
-            width: 40px; height: 40px; border-radius: 10px; cursor: pointer; display: flex;
-            align-items: center; justify-content: center; transition: all 0.2s; position: relative;
+       .question-box h3 { margin-bottom: 12px; color: #2d3748; }
+       .options { margin: 10px 0; }
+       .options p { padding: 8px; margin: 5px 0; background: white; border-radius: 4px; }
+       .correct { background: #c6f6d5!important; border: 2px solid #38a169; font-weight: bold; }
+       .explanation {
+            background: #feebc8; padding: 12px; margin-top: 12px;
+            border-radius: 5px; border-left: 3px solid #dd6b20;
         }
-       .icon-btn:hover { background: var(--bg-hover); transform: translateY(-1px); }
-       .icon-btn.active { background: var(--success); color: white; border-color: var(--success); }
-       .notif-dot { position: absolute; top: 7px; right: 7px; width: 8px; height: 8px; background: var(--danger); border-radius: 50%; display: none; }
-       .icon-btn.active.notif-dot { display: block; }
-       .user-badge { background: linear-gradient(135deg, #7c3aed, #a855f7); padding: 8px 16px; border-radius: 20px; font-size: 12px; font-weight: 600; }
-
-       .layout { display: flex; }
-
-       .sidebar {
-            background: var(--bg-secondary); width: 72px; height: calc(100vh - 64px);
-            position: sticky; top: 64px; transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            overflow-y: auto; overflow-x: hidden; border-right: 1px solid var(--border);
-        }
-       .sidebar.expanded { width: 240px; }
-       .sidebar-item {
-            display: flex; align-items: center; gap: 16px; padding: 14px 24px; margin: 4px 8px;
-            color: var(--text-secondary); cursor: pointer; transition: all 0.2s;
-            white-space: nowrap; border-radius: 10px; font-weight: 500;
-        }
-       .sidebar-item:hover { background: var(--bg-hover); color: var(--text-primary); }
-       .sidebar-item.active { background: var(--accent); color: white; }
-       .sidebar-item i { font-size: 18px; width: 24px; text-align: center; }
-       .sidebar-item span { opacity: 0; transition: opacity 0.2s; }
-       .sidebar.expanded .sidebar-item span { opacity: 1; }
-
-       .main-content { flex: 1; padding: 24px; }
-
-       .stats-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 16px; margin-bottom: 24px;
-        }
-       .stat-card {
-            background: var(--bg-secondary); padding: 20px; border-radius: 16px;
-            border: 1px solid var(--border); height: 110px; display: flex; flex-direction: column;
-            justify-content: space-between; position: relative; overflow: hidden; transition: all 0.3s;
-            box-shadow: var(--shadow);
-        }
-       .stat-card:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3); }
-       .stat-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; }
-       .stat-card.revenue::before { background: var(--accent); }
-       .stat-card.profit::before { background: var(--success); }
-       .stat-card.capital::before { background: var(--warning); }
-       .stat-card.expenses::before { background: var(--danger); }
-       .stat-card.sales::before { background: var(--purple); }
-       .stat-card.repairs::before { background: #06b6d4; }
-
-       .stat-card h3 {
-            color: var(--text-muted); font-size: 11px; margin-bottom: 8px;
-            text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;
-        }
-       .stat-card .value {
-            font-size: 28px; font-weight: 700; color: var(--text-primary);
-            line-height: 1; margin-bottom: 4px;
-        }
-       .stat-card .sub { color: var(--text-muted); font-size: 12px; }
-       .stat-card .value.profit { color: var(--success); }
-       .stat-card .value.expense { color: var(--danger); }
-
-       .content-section {
-            background: var(--bg-secondary); padding: 24px; border-radius: 16px;
-            border: 1px solid var(--border); display: none; box-shadow: var(--shadow);
-        }
-       .content-section.active { display: block; animation: fadeIn 0.3s; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-       .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
-       .section-header h2 { font-size: 20px; display: flex; align-items: center; gap: 10px; font-weight: 700; }
-
-       .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 16px; }
-       .form-field label { display: block; margin-bottom: 6px; color: var(--text-secondary); font-weight: 600; font-size: 13px; }
-       .form-field input,.form-field select {
-            width: 100%; padding: 11px 14px; background: var(--bg-card); border: 1px solid var(--border);
-            border-radius: 10px; font-size: 14px; color: var(--text-primary); transition: all 0.2s;
-        }
-       .form-field input:focus,.form-field select:focus {
-            outline: none; border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
-        }
-       .btn-primary {
-            background: var(--accent); color: white; border: none; padding: 12px 28px;
-            border-radius: 10px; font-weight: 600; cursor: pointer; transition: all 0.2s;
-            display: inline-flex; align-items: center; gap: 8px;
-        }
-       .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(59,130,246,0.4); }
-
-       .table-wrapper { overflow-x: auto; border-radius: 12px; border: 1px solid var(--border); }
-        table { width: 100%; border-collapse: collapse; }
-        th {
-            background: var(--bg-card); padding: 14px 16px; text-align: left; font-weight: 600;
-            color: var(--text-secondary); font-size: 12px; text-transform: uppercase;
-            border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 10;
-        }
-        td { padding: 16px; border-bottom: 1px solid var(--border); font-size: 14px; }
-        tr:hover { background: var(--bg-hover); }
-       .badge { padding: 5px 12px; border-radius: 6px; font-size: 11px; font-weight: 600; display: inline-block; }
-       .badge-sale { background: rgba(59,130,246,0.15); color: #60a5fa; }
-       .badge-repair { background: rgba(245,158,11,0.15); color: #fbbf24; }
-       .badge-expense { background: rgba(239,68,68,0.15); color: #f87171; }
-       .profit-text { color: var(--success); font-weight: 600; }
-       .action-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; margin: 0 4px; font-size: 16px; padding: 6px; border-radius: 6px; }
-       .action-btn:hover { background: var(--bg-hover); color: var(--accent); }
-       .action-btn.delete:hover { color: var(--danger); }
-
-       .filters { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; align-items: center; }
-       .filters select,.filters input {
-            padding: 10px 14px; background: var(--bg-card); border: 1px solid var(--border);
-            border-radius: 10px; color: var(--text-primary); font-size: 14px; transition: all 0.2s;
-        }
-       .filters select:focus,.filters input:focus { outline: none; border-color: var(--accent); }
-       .search-box { flex: 1; min-width: 250px; position: relative; }
-       .search-box i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
-       .search-box input { padding-left: 38px; width: 100%; }
-       .clear-filter { color: var(--accent); cursor: pointer; font-size: 13px; font-weight: 600; padding: 10px; border-radius: 8px; }
-       .clear-filter:hover { background: var(--bg-hover); }
-
-       .chart-container { height: 350px; margin-top: 20px; }
-
-       .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(4px); align-items: center; justify-content: center; z-index: 1000; padding: 20px; }
-       .modal.active { display: flex; animation: fadeIn 0.2s; }
-       .modal-inner { background: var(--bg-secondary); padding: 30px; border-radius: 16px; max-width: 500px; width: 100%; border: 1px solid var(--border); max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.5); }
-       .modal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-       .modal-close { background: none; border: none; color: var(--text-muted); font-size: 24px; cursor: pointer; padding: 4px; border-radius: 6px; }
-       .modal-close:hover { background: var(--bg-hover); }
-
-        @media (max-width: 768px) {
-           .sidebar { position: fixed; z-index: 99; transform: translateX(-100%); }
-           .sidebar.expanded { transform: translateX(0); width: 240px; }
-           .stats-grid { grid-template-columns: repeat(2, 1fr); }
-           .main-content { padding: 16px; }
-           .logo h1 { font-size: 14px; }
-           .logo p { display: none; }
-           .section-header { flex-direction: column; align-items: flex-start; }
+       .hide { display: none; }
+        @media print {
+           .controls { display: none; }
+            body { background: white; }
+           .question-box { border: 1px solid #ccc; }
         }
     </style>
 </head>
 <body>
-    <div class="topnav">
-        <div class="nav-left">
-            <button class="menu-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
-            <div class="logo">
-                <div class="logo-icon"><i class="fas fa-mobile-alt"></i></div>
-                <div>
-                    <h1>AL - GADGET REPAIR</h1>
-                    <p>Professional Management System</p>
+    <div class="container">
+        <h1>LET ELEMENTARY 2026 FULL REVIEWER</h1>
+        <p class="subtitle">150 Items Complete | GenEd 1-75 + ProfEd 76-150 | With Answer Key & Explanation</p>
+
+        <div class="controls">
+            <button onclick="showSection('all')" class="active">Show All 150</button>
+            <button onclick="showSection('gened')">GenEd 1-75</button>
+            <button onclick="showSection('profed')">ProfEd 76-150</button>
+            <button onclick="window.print()">Print / Save PDF</button>
+        </div>
+
+        <div id="genedSection">
+            <div class="section-title">PART I: GENERAL EDUCATION - 75 ITEMS</div>
+
+            <!-- ENGLISH 1-15 -->
+            <div class="question-box">
+                <h3>1. Alin ang may wastong gamit ng gitling?</h3>
+                <div class="options">
+                    <p>A. Nag-aral mabuti</p>
+                    <p class="correct">B. Mag-aaral ako</p>
+                    <p>C. Pag-asa ng bayan</p>
+                    <p>D. Bawat-isa</p>
                 </div>
+                <div class="explanation"><strong>Explanation:</strong> Ginagamit ang gitling sa inuulit na salita at kapag may unlapi na nagtatapos sa katinig + salitang nagsisimula sa patinig. "Mag-aaral" = mag + aral.</div>
             </div>
-        <div class="nav-right">
-            <button class="icon-btn" id="notifBtn" onclick="toggleNotif()" title="Notifications">
-                <i class="fas fa-bell"></i>
-                <span class="notif-dot"></span>
-            </button>
-            <button class="icon-btn" onclick="toggleTheme()" title="Dark/Light Mode">
-                <i class="fas fa-sun" id="themeIcon"></i>
-            </button>
-            <button class="icon-btn" id="installBtn" onclick="installPWA()" title="Install App" style="display:none;">
-                <i class="fas fa-download"></i>
-            </button>
-            <span class="user-badge" id="userBadge">ADMIN</span>
-            <button class="icon-btn" onclick="logout()" title="Logout">
-                <i class="fas fa-sign-out-alt"></i>
-            </button>
+
+            <div class="question-box">
+                <h3>2. "It takes two to tango" means:</h3>
+                <div class="options">
+                    <p>A. Dancing needs a partner</p>
+                    <p class="correct">B. Both parties are responsible for a situation</p>
+                    <p>C. Two is better than one</p>
+                    <p>D. Tango is for couples only</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Idiomatic expression meaning both people involved are responsible.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>3. Which sentence is grammatically correct?</h3>
+                <div class="options">
+                    <p>A. She don't like coffee.</p>
+                    <p class="correct">B. She doesn't like coffee.</p>
+                    <p>C. She not like coffee.</p>
+                    <p>D. She no like coffee.</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Third person singular uses "doesn't" not "don't".</div>
+            </div>
+
+            <div class="question-box">
+                <h3>4. The plural form of "child" is:</h3>
+                <div class="options">
+                    <p>A. Childs</p>
+                    <p class="correct">B. Children</p>
+                    <p>C. Childes</p>
+                    <p>D. Childrens</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> "Children" is an irregular plural form.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>5. Choose the synonym of "Benevolent":</h3>
+                <div class="options">
+                    <p>A. Cruel</p>
+                    <p class="correct">B. Kind</p>
+                    <p>C. Selfish</p>
+                    <p>D. Angry</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Benevolent means well-meaning and kindly.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>6. What is the antonym of "Expand"?</h3>
+                <div class="options">
+                    <p>A. Grow</p>
+                    <p>B. Increase</p>
+                    <p class="correct">C. Contract</p>
+                    <p>D. Enlarge</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Expand means to become larger; contract means to become smaller.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>7. Identify the figure of speech: "The wind whispered through the trees."</h3>
+                <div class="options">
+                    <p>A. Simile</p>
+                    <p class="correct">B. Personification</p>
+                    <p>C. Metaphor</p>
+                    <p>D. Hyperbole</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Personification gives human traits to non-human things. Wind cannot whisper.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>8. Which is a proper noun?</h3>
+                <div class="options">
+                    <p>A. city</p>
+                    <p class="correct">B. Manila</p>
+                    <p>C. country</p>
+                    <p>D. river</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Proper nouns are specific names and are capitalized.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>9. "She is as brave as a lion." This is an example of:</h3>
+                <div class="options">
+                    <p class="correct">A. Simile</p>
+                    <p>B. Metaphor</p>
+                    <p>C. Personification</p>
+                    <p>D. Alliteration</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Simile uses "as" or "like" to compare.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>10. What is the past tense of "go"?</h3>
+                <div class="options">
+                    <p>A. Goed</p>
+                    <p class="correct">B. Went</p>
+                    <p>C. Gone</p>
+                    <p>D. Going</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> "Went" is the simple past tense of "go".</div>
+            </div>
+
+            <div class="question-box">
+                <h3>11. Choose the correct spelling:</h3>
+                <div class="options">
+                    <p>A. Recieve</p>
+                    <p class="correct">B. Receive</p>
+                    <p>C. Recive</p>
+                    <p>D. Receve</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> "I before E except after C" rule.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>12. The main idea of a paragraph is found in the:</h3>
+                <div class="options">
+                    <p class="correct">A. Topic sentence</p>
+                    <p>B. Supporting details</p>
+                    <p>C. Conclusion</p>
+                    <p>D. Title</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Topic sentence states the main idea.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>13. "Neither John nor Mary ___ coming."</h3>
+                <div class="options">
+                    <p>A. are</p>
+                    <p class="correct">B. is</p>
+                    <p>C. were</p>
+                    <p>D. have</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> With "neither...nor", verb agrees with the nearer subject. Mary is singular.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>14. Which word is an adverb?</h3>
+                <div class="options">
+                    <p>A. Happy</p>
+                    <p>B. Happiness</p>
+                    <p class="correct">C. Happily</p>
+                    <p>D. Happen</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Adverbs often end in -ly and modify verbs.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>15. "To be or not to be" is a famous line from:</h3>
+                <div class="options">
+                    <p class="correct">A. Hamlet</p>
+                    <p>B. Romeo and Juliet</p>
+                    <p>C. Macbeth</p>
+                    <p>D. Othello</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Famous soliloquy from Shakespeare's Hamlet.</div>
+            </div>
+
+            <!-- FILIPINO 16-30 -->
+            <div class="question-box">
+                <h3>16. Sino ang sumulat ng 'Florante at Laura'?</h3>
+                <div class="options">
+                    <p class="correct">A. Francisco Balagtas</p>
+                    <p>B. Jose Rizal</p>
+                    <p>C. Lope K. Santos</p>
+                    <p>D. Amado Hernandez</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Si Francisco Balagtas Baltazar ang sumulat nito noong 1838.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>17. Ang "anak-pawis" ay nangangahulugang:</h3>
+                <div class="options">
+                    <p>A. Anak na tamad</p>
+                    <p class="correct">B. Manggagawa</p>
+                    <p>C. Anak na masipag</p>
+                    <p>D. Mahirap</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Anak-pawis = uri ng manggagawa o proletaryado.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>18. Alin ang tambalang salita?</h3>
+                <div class="options">
+                    <p>A. Maganda</p>
+                    <p class="correct">B. Bahaghari</p>
+                    <p>C. Tumakbo</p>
+                    <p>D. Malaki</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Tambalan = dalawang salitang pinagsama. Bahag + hari = bahaghari.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>19. Ang wastong baybay ng "kasiyahan" ay:</h3>
+                <div class="options">
+                    <p>A. Kasiyahann</p>
+                    <p class="correct">B. Kasiyahan</p>
+                    <p>C. Kasayahan</p>
+                    <p>D. Kasyahan</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Mula sa salitang-ugat na "saya" + ka-an.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>20. "Ang hindi marunong lumingon sa pinanggalingan ay hindi makararating sa paroroonan" ay salawikain ni:</h3>
+                <div class="options">
+                    <p class="correct">A. Jose Rizal</p>
+                    <p>B. Andres Bonifacio</p>
+                    <p>C. Emilio Jacinto</p>
+                    <p>D. Apolinario Mabini</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Sikat na kasabihan ni Dr. Jose Rizal.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>21. Uri ng pangungusap na nagsasaad ng damdamin:</h3>
+                <div class="options">
+                    <p>A. Patanong</p>
+                    <p>B. Pautos</p>
+                    <p class="correct">C. Padamdam</p>
+                    <p>D. Pasalaysay</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Padamdam = naglalahad ng matinding damdamin.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>22. Ang "Noli Me Tangere" ay sinulat ni:</h3>
+                <div class="options">
+                    <p class="correct">A. Jose Rizal</p>
+                    <p>B. Marcelo H. del Pilar</p>
+                    <p>C. Graciano Lopez Jaena</p>
+                    <p>D. Antonio Luna</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Unang nobela ni Rizal na inilathala noong 1887.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>23. Alin ang hindi kabilang sa 8 bahagi ng pananalita?</h3>
+                <div class="options">
+                    <p>A. Pangngalan</p>
+                    <p>B. Pandiwa</p>
+                    <p class="correct">C. Parirala</p>
+                    <p>D. Pang-uri</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Ang parirala ay grupo ng salita, hindi bahagi ng pananalita.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>24. Ang "makata" ay nangangahulugang:</h3>
+                <div class="options">
+                    <p>A. Mang-aawit</p>
+                    <p class="correct">B. Manunulat ng tula</p>
+                    <p>C. Mananalaysay</p>
+                    <p>D. Mandudula</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Makata = poet.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>25. Anong tayutay: "Ang kanyang ngiti ay araw sa tag-ulan"?</h3>
+                <div class="options">
+                    <p>A. Pagtutulad</p>
+                    <p class="correct">B. Pagwawangis/Metapora</p>
+                    <p>C. Pagmamalabis</p>
+                    <p>D. Pagsasatao</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Metapora = tuwirang paghahambing na di gumagamit ng "tulad ng".</div>
+            </div>
+
+            <div class="question-box">
+                <h3>26. Ang wikang pambansa ng Pilipinas ay:</h3>
+                <div class="options">
+                    <p>A. Tagalog</p>
+                    <p class="correct">B. Filipino</p>
+                    <p>C. Ingles</p>
+                    <p>D. Espanyol</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Ayon sa 1987 Constitution, Filipino ang pambansang wika.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>27. Kailan ginaganap ang Buwan ng Wika?</h3>
+                <div class="options">
+                    <p>A. Hulyo</p>
+                    <p class="correct">B. Agosto</p>
+                    <p>C. Setyembre</p>
+                    <p>D. Hunyo</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Agosto ang Buwan ng Wikang Pambansa.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>28. Ang "ma" sa salitang "maganda" ay:</h3>
+                <div class="options">
+                    <p class="correct">A. Unlapi</p>
+                    <p>B. Gitlapi</p>
+                    <p>C. Hulapi</p>
+                    <p>D. Kabilaan</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Unlapi = panlapi sa unahan ng salita.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>29. Alin ang diptonggo?</h3>
+                <div class="options">
+                    <p>A. aa</p>
+                    <p class="correct">B. aw</p>
+                    <p>C. ii</p>
+                    <p>D. oo</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Diptonggo = pinagsamang patinig sa isang pantig: aw, ay, iw, oy, uy.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>30. "Sumulat" ay nasa aspetong:</h3>
+                <div class="options">
+                    <p>A. Perpektibo</p>
+                    <p>B. Imperpektibo</p>
+                    <p class="correct">C. Kontemplatibo</p>
+                    <p>D. Pawatas</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Kontemplatibo = gagawin pa lamang.</div>
+            </div>
+
+            <!-- MATH 31-45 -->
+            <div class="question-box">
+                <h3>31. What is 15% of 200?</h3>
+                <div class="options">
+                    <p>A. 15</p>
+                    <p>B. 20</p>
+                    <p class="correct">C. 30</p>
+                    <p>D. 35</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> 200 × 0.15 = 30</div>
+            </div>
+
+            <div class="question-box">
+                <h3>32. Solve for x: 2x - 8 = 10</h3>
+                <div class="options">
+                    <p>A. 1</p>
+                    <p class="correct">B. 9</p>
+                    <p>C. 18</p>
+                    <p>D. 26</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> 2x = 18, x = 9</div>
+            </div>
+
+            <div class="question-box">
+                <h3>33. The area of a rectangle with length 8m and width 5m is:</h3>
+                <div class="options">
+                    <p>A. 13 m²</p>
+                    <p>B. 26 m²</p>
+                    <p class="correct">C. 40 m²</p>
+                    <p>D. 80 m²</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Area = length × width = 8 × 5 = 40</div>
+            </div>
+
+            <div class="question-box">
+                <h3>34. What is the next number in the sequence: 2, 4, 8, 16, ___?</h3>
+                <div class="options">
+                    <p>A. 20</p>
+                    <p>B. 24</p>
+                    <p class="correct">C. 32</p>
+                    <p>D. 64</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Multiply by 2 each time. 16 × 2 = 32</div>
+            </div>
+
+            <div class="question-box">
+                <h3>35. Simplify: 3/4 + 1/2</h3>
+                <div class="options">
+                    <p>A. 4/6</p>
+                    <p class="correct">B. 5/4 or 1¼</p>
+                    <p>C. 3/8</p>
+                    <p>D. 4/8</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> 3/4 + 2/4 = 5/4 = 1¼</div>
+            </div>
+
+            <div class="question-box">
+                <h3>36. The square root of 144 is:</h3>
+                <div class="options">
+                    <p>A. 11</p>
+                    <p class="correct">B. 12</p>
+                    <p>C. 13</p>
+                    <p>D. 14</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> 12 × 12 = 144</div>
+            </div>
+
+            <div class="question-box">
+                <h3>37. If a dozen eggs cost ₱96, how much does one egg cost?</h3>
+                <div class="options">
+                    <p>A. ₱6</p>
+                    <p class="correct">B. ₱8</p>
+                    <p>C. ₱9</p>
+                    <p>D. ₱12</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> 96 ÷ 12 = 8</div>
+            </div>
+
+            <div class="question-box">
+                <h3>38. What is 25% expressed as a fraction?</h3>
+                <div class="options">
+                    <p>A. 1/2</p>
+                    <p>B. 1/3</p>
+                    <p class="correct">C. 1/4</p>
+                    <p>D. 1/5</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> 25% = 25/100 = 1/4</div>
+            </div>
+
+            <div class="question-box">
+                <h3>39. The perimeter of a square with side 6cm is:</h3>
+                <div class="options">
+                    <p>A. 12 cm</p>
+                    <p>B. 18 cm</p>
+                    <p class="correct">C. 24 cm</p>
+                    <p>D. 36 cm</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Perimeter = 4 × side = 4 × 6 = 24</div>
+            </div>
+
+            <div class="question-box">
+                <h3>40. 3³ equals:</h3>
+                <div class="options">
+                    <p>A. 6</p>
+                    <p>B. 9</p>
+                    <p class="correct">C. 27</p>
+                    <p>D. 81</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> 3 × 3 × 3 = 27</div>
+            </div>
+
+            <div class="question-box">
+                <h3>41. Average of 10, 20, 30:</h3>
+                <div class="options">
+                    <p>A. 15</p>
+                    <p class="correct">B. 20</p>
+                    <p>C. 25</p>
+                    <p>D. 60</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> (10+20+30)/3 = 60/3 = 20</div>
+            </div>
+
+            <div class="question-box">
+                <h3>42. How many degrees in a triangle?</h3>
+                <div class="options">
+                    <p>A. 90°</p>
+                    <p class="correct">B. 180°</p>
+                    <p>C. 270°</p>
+                    <p>D. 360°</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Sum of interior angles of a triangle = 180°</div>
+            </div>
+
+            <div class="question-box">
+                <h3>43. Convert 0.75 to percent:</h3>
+                <div class="options">
+                    <p>A. 7.5%</p>
+                    <p class="correct">B. 75%</p>
+                    <p>C. 0.75%</p>
+                    <p>D. 750%</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> 0.75 × 100 = 75%</div>
+            </div>
+
+            <div class="question-box">
+                <h3>44. If 5x = 35, then x = ?</h3>
+                <div class="options">
+                    <p>A. 5</p>
+                    <p>B. 6</p>
+                    <p class="correct">C. 7</p>
+                    <p>D. 30</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> 35 ÷ 5 = 7</div>
+            </div>
+
+            <div class="question-box">
+                <h3>45. LCM of 4 and 6:</h3>
+                <div class="options">
+                    <p>A. 2</p>
+                    <p>B. 10</p>
+                    <p class="correct">C. 12</p>
+                    <p>D. 24</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Multiples of 4: 4,8,12... Multiples of 6: 6,12... LCM = 12</div>
+            </div>
+
+            <!-- SCIENCE 46-60 -->
+            <div class="question-box">
+                <h3>46. The smallest unit of life is:</h3>
+                <div class="options">
+                    <p>A. Atom</p>
+                    <p class="correct">B. Cell</p>
+                    <p>C. Tissue</p>
+                    <p>D. Organ</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Cell is the basic structural and functional unit of life.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>47. Process by which plants make food:</h3>
+                <div class="options">
+                    <p>A. Respiration</p>
+                    <p class="correct">B. Photosynthesis</p>
+                    <p>C. Transpiration</p>
+                    <p>D. Germination</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Photosynthesis uses sunlight, CO2, and water to make glucose.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>48. The planet closest to the sun:</h3>
+                <div class="options">
+                    <p class="correct">A. Mercury</p>
+                    <p>B. Venus</p>
+                    <p>C. Earth</p>
+                    <p>D. Mars</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Order: Mercury, Venus, Earth, Mars...</div>
+            </div>
+
+            <div class="question-box">
+                <h3>49. Water boils at:</h3>
+                <div class="options">
+                    <p>A. 0°C</p>
+                    <p>B. 50°C</p>
+                    <p class="correct">C. 100°C</p>
+                    <p>D. 212°C</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> At sea level, water boils at 100°C or 212°F.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>50. Which is NOT a state of matter?</h3>
+                <div class="options">
+                    <p>A. Solid</p>
+                    <p>B. Liquid</p>
+                    <p>C. Gas</p>
+                    <p class="correct">D. Energy</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Energy is not matter. Plasma is the 4th state.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>51. The human heart has how many chambers?</h3>
+                <div class="options">
+                    <p>A. 2</p>
+                    <p>B. 3</p>
+                    <p class="correct">C. 4</p>
+                    <p>D. 5</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> 2 atria and 2 ventricles = 4 chambers.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>52. Chemical symbol for Gold:</h3>
+                <div class="options">
+                    <p>A. Go</p>
+                    <p>B. Gd</p>
+                    <p class="correct">C. Au</p>
+                    <p>D. Ag</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Au from Latin "aurum". Ag is Silver.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>53. Layer of Earth we live on:</h3>
+                <div class="options">
+                    <p class="correct">A. Crust</p>
+                    <p>B. Mantle</p>
+                    <p>C. Outer Core</p>
+                    <p>D. Inner Core</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Crust is the outermost layer.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>54. Force that pulls objects to Earth:</h3>
+                <div class="options">
+                    <p>A. Magnetism</p>
+                    <p class="correct">B. Gravity</p>
+                    <p>C. Friction</p>
+                    <p>D. Inertia</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Gravity is the force of attraction between masses.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>55. Which gas do humans breathe in?</h3>
+                <div class="options">
+                    <p>A. Carbon dioxide</p>
+                    <p class="correct">B. Oxygen</p>
+                    <p>C. Nitrogen</p>
+                    <p>D. Hydrogen</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> We inhale oxygen for cellular respiration.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>56. The largest organ of the human body:</h3>
+                <div class="options">
+                    <p>A. Liver</p>
+                    <p>B. Brain</p>
+                    <p class="correct">C. Skin</p>
+                    <p>D. Lung</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Skin is the largest organ by surface area and weight.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>57. H2O is the chemical formula for:</h3>
+                <div class="options">
+                    <p>A. Hydrogen</p>
+                    <p>B. Oxygen</p>
+                    <p class="correct">C. Water</p>
+                    <p>D. Salt</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> 2 Hydrogen + 1 Oxygen = Water.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>58. Animals that eat only plants are:</h3>
+                <div class="options">
+                    <p class="correct">A. Herbivores</p>
+                    <p>B. Carnivores</p>
+                    <p>C. Omnivores</p>
+                    <p>D. Decomposers</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Herb = plant, vore = eater.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>59. What causes day and night?</h3>
+                <div class="options">
+                    <p>A. Earth's revolution</p>
+                    <p class="correct">B. Earth's rotation</p>
+                    <p>C. Moon's rotation</p>
+                    <p>D. Sun's movement</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Earth rotates on its axis every 24 hours.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>60. The three R's of waste management:</h3>
+                <div class="options">
+                    <p class="correct">A. Reduce, Reuse, Recycle</p>
+                    <p>B. Read, Write, Arithmetic</p>
+                    <p>C. Run, Rest, Recover</p>
+                    <p>D. Remove, Replace, Repair</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Environmental conservation: Reduce, Reuse, Recycle.</div>
+            </div>
+
+                        <!-- SOCIAL SCIENCE 61-70 -->
+            <div class="question-box">
+                <h3>61. The smallest continent is:</h3>
+                <div class="options">
+                    <p>A. Europe</p>
+                    <p>B. Antarctica</p>
+                    <p class="correct">C. Australia</p>
+                    <p>D. South America</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Australia ang pinakamaliit na kontinente by land area na 7.7M sq km.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>62. Sino ang tinaguriang "Ama ng Wikang Pambansa"?</h3>
+                <div class="options">
+                    <p>A. Jose Rizal</p>
+                    <p class="correct">B. Manuel L. Quezon</p>
+                    <p>C. Andres Bonifacio</p>
+                    <p>D. Emilio Aguinaldo</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Si Manuel L. Quezon ang nagtatag ng Surian ng Wikang Pambansa noong 1937.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>63. Ang unang republika sa Asya ay:</h3>
+                <div class="options">
+                    <p class="correct">A. Unang Republika ng Pilipinas</p>
+                    <p>B. Republika ng China</p>
+                    <p>C. Republika ng India</p>
+                    <p>D. Republika ng Japan</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Unang Republika ng Pilipinas o Malolos Republic noong 1899.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>64. Ano ang tawag sa pinakamataas na batas ng Pilipinas?</h3>
+                <div class="options">
+                    <p>A. Civil Code</p>
+                    <p class="correct">B. Constitution / Saligang Batas</p>
+                    <p>C. Penal Code</p>
+                    <p>D. Family Code</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Ang 1987 Constitution ang supreme law of the land.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>65. Kailan ginugunita ang Araw ng Kalayaan?</h3>
+                <div class="options">
+                    <p>A. Hunyo 12, 1896</p>
+                    <p class="correct">B. Hunyo 12, 1898</p>
+                    <p>C. Hulyo 4, 1946</p>
+                    <p>D. Agosto 30, 1896</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Idineklara ni Aguinaldo ang kalayaan noong Hunyo 12, 1898 sa Kawit, Cavite.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>66. Ang longest river sa Pilipinas:</h3>
+                <div class="options">
+                    <p>A. Pasig River</p>
+                    <p class="correct">B. Cagayan River</p>
+                    <p>C. Agusan River</p>
+                    <p>D. Pampanga River</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Cagayan River sa Northern Luzon, 505 km ang haba.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>67. Ilang rehiyon meron ang Pilipinas as of 2026?</h3>
+                <div class="options">
+                    <p>A. 16</p>
+                    <p>B. 17</p>
+                    <p class="correct">C. 18</p>
+                    <p>D. 19</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> 17 administrative regions + BARMM = 18 total.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>68. Sino ang sumulat ng "Mi Ultimo Adios"?</h3>
+                <div class="options">
+                    <p class="correct">A. Jose Rizal</p>
+                    <p>B. Andres Bonifacio</p>
+                    <p>C. Marcelo H. del Pilar</p>
+                    <p>D. Emilio Jacinto</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Huling tula ni Rizal bago sya barilin noong Dec 30, 1896.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>69. Ang tawag sa pag-aaral ng population:</h3>
+                <div class="options">
+                    <p>A. Geography</p>
+                    <p class="correct">B. Demography</p>
+                    <p>C. Anthropology</p>
+                    <p>D. Sociology</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Demography = study ng human population statistics.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>70. Ano ang capital ng Australia?</h3>
+                <div class="options">
+                    <p>A. Sydney</p>
+                    <p>B. Melbourne</p>
+                    <p class="correct">C. Canberra</p>
+                    <p>D. Perth</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Canberra ang capital, hindi Sydney.</div>
+            </div>
+
+            <!-- ICT 71-75 -->
+            <div class="question-box">
+                <h3>71. Ang tawag sa utak ng computer:</h3>
+                <div class="options">
+                    <p>A. RAM</p>
+                    <p class="correct">B. CPU</p>
+                    <p>C. Hard Drive</p>
+                    <p>D. Motherboard</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> CPU = Central Processing Unit, brain ng computer.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>72. Ano ang ibig sabihin ng "WWW"?</h3>
+                <div class="options">
+                    <p>A. World Wide Weather</p>
+                    <p class="correct">B. World Wide Web</p>
+                    <p>C. World Web Wide</p>
+                    <p>D. Wide World Web</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> WWW = World Wide Web, invented by Tim Berners-Lee.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>73. Keyboard shortcut para mag-copy:</h3>
+                <div class="options">
+                    <p>A. Ctrl + X</p>
+                    <p class="correct">B. Ctrl + C</p>
+                    <p>C. Ctrl + V</p>
+                    <p>D. Ctrl + P</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Ctrl+C = Copy, Ctrl+V = Paste, Ctrl+X = Cut.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>74. Ang .docx ay file extension ng:</h3>
+                <div class="options">
+                    <p>A. Excel</p>
+                    <p class="correct">B. Microsoft Word</p>
+                    <p>C. PowerPoint</p>
+                    <p>D. PDF</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> .docx = Word document, .xlsx = Excel, .pptx = PowerPoint.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>75. Ang tawag sa program na sumisira sa computer:</h3>
+                <div class="options">
+                    <p>A. Software</p>
+                    <p>B. Application</p>
+                    <p class="correct">C. Virus/Malware</p>
+                    <p>D. Driver</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Virus/Malware = malicious software na sumisira ng data.</div>
+            </div>
+
+        </div>
+
+        <div id="profedSection">
+            <div class="section-title">PART II: PROFESSIONAL EDUCATION - 75 ITEMS</div>
+
+            <!-- THE TEACHING PROFESSION 76-85 -->
+            <div class="question-box">
+                <h3>76. Ayon sa RA 7836, sino ang qualified mag-take ng LET?</h3>
+                <div class="options">
+                    <p>A. High school graduate</p>
+                    <p class="correct">B. Bachelor's degree holder in Education or with 18 units ProfEd</p>
+                    <p>C. Kahit sino</p>
+                    <p>D. Master's degree holder lang</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> RA 7836 = Philippine Teachers Professionalization Act. Need degree + 18 units ProfEd kung non-Educ grad.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>77. Ang Code of Ethics for Professional Teachers ay nasa:</h3>
+                <div class="options">
+                    <p>A. RA 4670</p>
+                    <p class="correct">B. Board Resolution No. 435 s. 1997</p>
+                    <p>C. RA 7836</p>
+                    <p>D. RA 10533</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> PRC Board for Professional Teachers Resolution No. 435.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>78. Alin ang HINDI kasama sa 21st Century Skills?</h3>
+                <div class="options">
+                    <p>A. Critical thinking</p>
+                    <p class="correct">B. Rote memorization</p>
+                    <p>C. Collaboration</p>
+                    <p>D. Creativity</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> 4Cs: Critical thinking, Creativity, Collaboration, Communication. Hindi na uso ang puro memorization.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>79. Ang Magna Carta for Public School Teachers ay:</h3>
+                <div class="options">
+                    <p class="correct">A. RA 4670</p>
+                    <p>B. RA 7836</p>
+                    <p>C. RA 9155</p>
+                    <p>D. RA 10533</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> RA 4670 = Magna Carta for Public School Teachers 1966.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>80. Ilang oras ang minimum teaching load ng public teacher per day?</h3>
+                <div class="options">
+                    <p>A. 4 hours</p>
+                    <p>B. 5 hours</p>
+                    <p class="correct">C. 6 hours</p>
+                    <p>D. 8 hours</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Ayon sa Magna Carta, 6 hours actual teaching, 2 hours related activities.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>81. Ang tawag sa CPD units na kailangan for license renewal:</h3>
+                <div class="options">
+                    <p>A. 15 units</p>
+                    <p class="correct">B. 45 units every 3 years</p>
+                    <p>C. 30 units</p>
+                    <p>D. 60 units</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> RA 10912 CPD Law: 45 CPD units per 3 years for teachers.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>82. Sino ang dapat mag-evaluate sa teacher?</h3>
+                <div class="options">
+                    <p>A. Students lang</p>
+                    <p>B. Principal lang</p>
+                    <p class="correct">C. Multiple evaluators: peer, self, supervisor, students</p>
+                    <p>D. Parents lang</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> RPMS-PPST uses multi-rater evaluation system.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>83. Ang Enhanced Basic Education Act ay:</h3>
+                <div class="options">
+                    <p>A. RA 7836</p>
+                    <p>B. RA 9155</p>
+                    <p class="correct">C. RA 10533</p>
+                    <p>D. RA 10912</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> RA 10533 = K-12 Law 2013.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>84. Ang "Loco Parentis" principle ay nangangahulugang:</h3>
+                <div class="options">
+                    <p>A. Mahal ng teacher ang students</p>
+                    <p class="correct">B. Teacher stands as parent sa school</p>
+                    <p>C. Parents dapat magturo</p>
+                    <p>D. Students dapat sumunod</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> In loco parentis = "in place of parents". Teacher has parental authority.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>85. Ilang taon ang validity ng PRC license?</h3>
+                <div class="options">
+                    <p>A. 1 year</p>
+                    <p class="correct">B. 3 years</p>
+                    <p>C. 5 years</p>
+                    <p>D. Lifetime</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> PRC ID valid for 3 years, renewable with CPD units.</div>
+            </div>
+
+            <!-- CHILD & ADOLESCENT DEV 86-95 -->
+            <div class="question-box">
+                <h3>86. Ayon kay Piaget, ang stage ng 2-7 years old:</h3>
+                <div class="options">
+                    <p>A. Sensorimotor</p>
+                    <p class="correct">B. Preoperational</p>
+                    <p>C. Concrete Operational</p>
+                    <p>D. Formal Operational</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Preoperational = symbolic thinking, egocentrism, animism. 2-7 years old.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>87. Ayon kay Erikson, ang conflict ng adolescence:</h3>
+                <div class="options">
+                    <p>A. Trust vs Mistrust</p>
+                    <p>B. Autonomy vs Shame</p>
+                    <p class="correct">C. Identity vs Role Confusion</p>
+                    <p>D. Intimacy vs Isolation</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> 12-18 years old = Identity vs Role Confusion stage.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>88. Ayon kay Vygotsky, ang ZPD ay:</h3>
+                <div class="options">
+                    <p>A. Kayang gawin mag-isa</p>
+                    <p class="correct">B. Agwat ng kayang gawin mag-isa vs with help</p>
+                    <p>C. Hindi kayang gawin</p>
+                    <p>D. Kayang gawin ng teacher</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Zone of Proximal Development = potential development with guidance.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>89. Ayon kay Kohlberg, ang pinakamataas na level ng moral development:</h3>
+                <div class="options">
+                    <p>A. Pre-conventional</p>
+                    <p>B. Conventional</p>
+                    <p class="correct">C. Post-conventional</p>
+                    <p>D. Pre-moral</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Post-conventional = principled conscience, universal ethics.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>90. Ang "tabula rasa" ni Locke ay nangangahulugang:</h3>
+                <div class="options">
+                    <p>A. Bata ay mayaman</p>
+                    <p class="correct">B. Bata ay blank slate/ walang alam pagkapanganak</p>
+                    <p>C. Bata ay matalino</p>
+                    <p>D. Bata ay masama</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Tabula rasa = blank slate. Experience ang nagfo-form ng knowledge.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>91. Ang "scaffolding" sa education ay:</h3>
+                <div class="options">
+                    <p>A. Pag-build ng school</p>
+                    <p class="correct">B. Temporary support para matuto ang bata</p>
+                    <p>C. Pag-akyat sa hagdan</p>
+                    <p>D. Pag-suspend ng student</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Scaffolding = temporary support na unti-unting tinatanggal pag marunong na.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>92. Ayon kay Gardner, ilang multiple intelligences?</h3>
+                <div class="options">
+                    <p>A. 7</p>
+                    <p>B. 8</p>
+                    <p class="correct">C. 9</p>
+                    <p>D. 10</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Original 8 + Existential = 9. Linguistic, Logical, Musical, Bodily, Spatial, Interpersonal, Intrapersonal, Naturalist, Existential.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>93. Ang "cephalocaudal" development ay:</h3>
+                <div class="options">
+                    <p class="correct">A. Head to toe development</p>
+                    <p>B. Toe to head development</p>
+                    <p>C. Center to outside</p>
+                    <p>D. Outside to center</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Cephalo=head, caudal=tail. Una ulo, huli paa.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>94. Ang "proximodistal" development ay:</h3>
+                <div class="options">
+                    <p>A. Head to toe</p>
+                    <p class="correct">B. Center to outside/extremities</p>
+                    <p>C. Toe to head</p>
+                    <p>D. Outside to center</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Una ang trunk/center, huli ang fingers/toes.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>95. Ayon kay Freud, ang "id" ay:</h3>
+                <div class="options">
+                    <p>A. Moral component</p>
+                    <p class="correct">B. Pleasure principle/instinct</p>
+                    <p>C. Reality principle</p>
+                    <p>D. Conscience</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Id = pleasure principle, Ego = reality, Superego = morality.</div>
+            </div>
+
+            <!-- FACILITATING LEARNING 96-105 -->
+            <div class="question-box">
+                <h3>96. Ang "constructivism" ay naniniwalang:</h3>
+                <div class="options">
+                    <p>A. Teacher ang source ng knowledge</p>
+                    <p class="correct">B. Students construct their own knowledge</p>
+                    <p>C. Memorization ang best</p>
+                    <p>D. Wala nang turo</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Constructivism = learners actively build knowledge based on experience.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>97. Ang "behaviorism" ay focus sa:</h3>
+                <div class="options">
+                    <p>A. Mind</p>
+                    <p class="correct">B. Observable behavior</p>
+                    <p>C. Emotions</p>
+                    <p>D. Dreams</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Behaviorism = stimulus-response, observable lang. Pavlov, Skinner, Thorndike.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>98. "Law of Effect" ni Thorndike:</h3>
+                <div class="options">
+                    <p>A. Practice makes perfect</p>
+                    <p class="correct">B. Behavior na may reward, uulitin</p>
+                    <p>C. Matututo pag ready</p>
+                    <p>D. Bawal magkamali</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Law of Effect = responses followed by satisfaction are strengthened.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>99. Ang "classical conditioning" ay kay:</h3>
+                <div class="options">
+                    <p class="correct">A. Pavlov</p>
+                    <p>B. Skinner</p>
+                    <p>C. Bandura</p>
+                    <p>D. Piaget</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Pavlov's dog = classical conditioning. Association ng stimulus.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>100. Ang "operant conditioning" ay kay:</h3>
+                <div class="options">
+                    <p>A. Pavlov</p>
+                    <p class="correct">B. Skinner</p>
+                    <p>C. Bandura</p>
+                    <p>D. Bruner</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Skinner = reinforcement at punishment para ma-shape ang behavior.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>101. Ang "social learning theory" ay kay:</h3>
+                <div class="options">
+                    <p>A. Piaget</p>
+                    <p>B. Vygotsky</p>
+                    <p class="correct">C. Bandura</p>
+                    <p>D. Maslow</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Bandura = learning through observation, imitation, modeling. Bobo doll experiment.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>102. Ang pinakamataas sa Maslow's Hierarchy:</h3>
+                <div class="options">
+                    <p>A. Safety needs</p>
+                    <p>B. Esteem needs</p>
+                    <p class="correct">C. Self-actualization</p>
+                    <p>D. Love/belonging</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Hierarchy: Physiological, Safety, Love, Esteem, Self-actualization.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>103. "Zone of Proximal Development" ay kay:</h3>
+                <div class="options">
+                    <p>A. Piaget</p>
+                    <p class="correct">B. Vygotsky</p>
+                    <p>C. Bruner</p>
+                    <p>D. Ausubel</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Vygotsky's ZPD + scaffolding + MKO (More Knowledgeable Other).</div>
+            </div>
+
+            <div class="question-box">
+                <h3>104. Ang "meaningful learning" ay kay:</h3>
+                <div class="options">
+                    <p>A. Bruner</p>
+                    <p class="correct">B. Ausubel</p>
+                    <p>C. Gagne</p>
+                    <p>D. Bloom</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Ausubel = meaningful learning vs rote learning. Advance organizers.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>105. Ang "discovery learning" ay kay:</h3>
+                <div class="options">
+                    <p class="correct">A. Bruner</p>
+                    <p>B. Ausubel</p>
+                    <p>C. Gagne</p>
+                    <p>D. Kohlberg</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Bruner = discovery learning, spiral curriculum.</div>
+            </div>
+
+            <!-- ASSESSMENT 106-115 -->
+            <div class="question-box">
+                <h3>106. Ang "formative assessment" ay ginagawa:</h3>
+                <div class="options">
+                    <p>A. Pagkatapos ng lesson</p>
+                    <p class="correct">B. Habang nagtuturo para mag-adjust</p>
+                    <p>C. End of quarter</p>
+                    <p>D. End of year</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Formative = assessment FOR learning, during instruction.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>107. Ang "summative assessment" ay:</h3>
+                <div class="options">
+                    <p>A. Quiz lang</p>
+                    <p class="correct">B. Assessment OF learning, sa dulo</p>
+                    <p>C. Recitation</p>
+                    <p>D. Seatwork</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Summative = final exam, periodical test, end ng unit/quarter.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>108. Ang "TOS" ay nangangahulugang:</h3>
+                <div class="options">
+                    <p>A. Test of Standards</p>
+                    <p class="correct">B. Table of Specifications</p>
+                    <p>C. Terms of Service</p>
+                    <p>D. Type of Students</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> TOS = blueprint ng test para balanced ang items.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>109. Ang test na nagko-compare ng student sa iba:</h3>
+                <div class="options">
+                    <p class="correct">A. Norm-referenced</p>
+                    <p>B. Criterion-referenced</p>
+                    <p>C. Diagnostic</p>
+                    <p>D. Placement</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Norm-referenced = rank/percentile. Criterion = against standard.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>110. Ang "rubric" ay ginagamit sa:</h3>
+                <div class="options">
+                    <p>A. Multiple choice</p>
+                    <p class="correct">B. Performance-based assessment</p>
+                    <p>C. True or False</p>
+                    <p>D. Matching type</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Rubric = scoring guide para sa essay, project, presentation.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>111. Ang "validity" ng test ay:</h3>
+                <div class="options">
+                    <p>A. Consistent ba</p>
+                    <p class="correct">B. Sinusukat ba talaga ang dapat sukatin</p>
+                    <p>C. Madali ba</p>
+                    <p>D. Mahaba ba</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Validity = test measures what it's supposed to measure.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>112. Ang "reliability" ng test ay:</h3>
+                <div class="options">
+                    <p class="correct">A. Consistency ng results</p>
+                    <p>B. Validity</p>
+                    <p>C. Difficulty</p>
+                    <p>D. Length</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Reliability = consistent results pag inulit ang test.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>113. Ang "portfolio assessment" ay:</h3>
+                <div class="options">
+                    <p>A. Isang exam lang</p>
+                    <p class="correct">B. Collection ng student work over time</p>
+                    <p>C. Quiz</p>
+                    <p>D. Recitation</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Portfolio = compilation ng best works showing growth.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>114. Ang "diagnostic test" ay ginagawa:</h3>
+                <div class="options">
+                    <p class="correct">A. Bago mag-start para malaman ang prior knowledge</p>
+                    <p>B. Pagkatapos ng lesson</p>
+                    <p>C. Mid-quarter</p>
+                    <p>D. End of year</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Diagnostic = pre-assessment para malaman strengths/weaknesses.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>115. Sa K-12 grading, ang passing grade ay:</h3>
+                <div class="options">
+                    <p>A. 70</p>
+                    <p class="correct">B. 75</p>
+                    <p>C. 80</p>
+                    <p>D. 85</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> DepEd Order 8 s. 2015: 75 is the minimum passing grade.</div>
+            </div>
+
+            <!-- CURRICULUM 116-125 -->
+            <div class="question-box">
+                <h3>116. Ang "hidden curriculum" ay:</h3>
+                <div class="options">
+                    <p>A. Nasa book</p>
+                    <p class="correct">B. Unwritten, unofficial, implicit lessons</p>
+                    <p>C. Nasa lesson plan</p>
+                    <p>D. Nasa exam</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Hidden curriculum = values, norms na natutunan indirectly sa school culture.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>117. Ang "spiral curriculum" ay kay:</h3>
+                <div class="options">
+                    <p class="correct">A. Bruner</p>
+                    <p>B. Tyler</p>
+                    <p>C. Taba</p>
+                    <p>D. Dewey</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Bruner = spiral curriculum, paulit-ulit topic pero mas complex each time.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>118. Ang "Tyler Rationale" ay may ilan questions?</h3>
+                <div class="options">
+                    <p>A. 3</p>
+                    <p class="correct">B. 4</p>
+                    <p>C. 5</p>
+                    <p>D. 6</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Tyler's 4 questions: 1.Objectives 2.Experiences 3.Organization 4.Evaluation.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>119. Ang K-12 curriculum ay may ilang taon?</h3>
+                <div class="options">
+                    <p>A. 10 years</p>
+                    <p>B. 11 years</p>
+                    <p class="correct">C. 13 years (K+6+4+2)</p>
+                    <p>D. 14 years</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Kinder + 6 Elem + 4 JHS + 2 SHS = 13 years.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>120. Ang "MTB-MLE" ay:</h3>
+                <div class="options">
+                    <p>A. Math curriculum</p>
+                    <p class="correct">B. Mother Tongue-Based Multilingual Education</p>
+                    <p>C. Music curriculum</p>
+                    <p>D. MAPEH curriculum</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> MTB-MLE = Grade 1-3 subjects taught in mother tongue.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>121. Ang "null curriculum" ay:</h3>
+                <div class="options">
+                    <p>A. Walang curriculum</p>
+                    <p class="correct">B. Mga hindi tinuturo sa school</p>
+                    <p>C. Extra curriculum</p>
+                    <p>D. Hidden curriculum</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Null = excluded/omitted sa curriculum.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>122. Ang "learning competencies" ay:</h3>
+                <div class="options">
+                    <p>A. Topics lang</p>
+                    <p class="correct">B. Knowledge, skills, attitudes na dapat matutunan</p>
+                    <p>C. Books lang</p>
+                    <p>D. Exams lang</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Competencies = KSA: Knowledge, Skills, Attitudes.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>123. Ang "UbD" ay nangangahulugang:</h3>
+                <div class="options">
+                    <p>A. Universal by Design</p>
+                    <p class="correct">B. Understanding by Design</p>
+                    <p>C. United by Design</p>
+                    <p>D. Under by Design</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> UbD = Wiggins & McTighe, backward design: start with desired results.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>124. Sa K-12, ang Grade 11-12 ay tinatawag na:</h3>
+                <div class="options">
+                    <p>A. Junior High School</p>
+                    <p class="correct">B. Senior High School</p>
+                    <p>C. Elementary</p>
+                    <p>D. College</p>
+                </div>
+                            <div class="question-box">
+                <h3>125. Ang "SHS tracks" sa K-12 ay ilan?</h3>
+                <div class="options">
+                    <p>A. 3</p>
+                    <p class="correct">B. 4</p>
+                    <p>C. 5</p>
+                    <p>D. 6</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> 4 tracks: Academic, TVL, Sports, Arts & Design.</div>
+            </div>
+
+            <!-- TECH FOR TEACHING 126-130 -->
+            <div class="question-box">
+                <h3>126. Ang "TPACK" ay nangangahulugang:</h3>
+                <div class="options">
+                    <p>A. Teaching Pack</p>
+                    <p class="correct">B. Technological Pedagogical Content Knowledge</p>
+                    <p>C. Teacher Planning and Curriculum Knowledge</p>
+                    <p>D. Teaching Performance and Content Knowledge</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> TPACK = integration ng Technology, Pedagogy, at Content Knowledge.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>127. Ang "blended learning" ay:</h3>
+                <div class="options">
+                    <p>A. Pure online lang</p>
+                    <p>B. Pure face-to-face lang</p>
+                    <p class="correct">C. Combination ng online at face-to-face</p>
+                    <p>D. Walang teacher</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Blended = pinagsamang online at traditional classroom.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>128. Ang "LMS" ay:</h3>
+                <div class="options">
+                    <p>A. Learning Made Simple</p>
+                    <p class="correct">B. Learning Management System</p>
+                    <p>C. Local Management School</p>
+                    <p>D. Learning Module System</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> LMS = Google Classroom, Moodle, Edmodo, etc.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>129. Ang "synchronous learning" ay:</h3>
+                <div class="options">
+                    <p>A. Self-paced, kahit anong oras</p>
+                    <p class="correct">B. Real-time, sabay-sabay</p>
+                    <p>C. Walang internet</p>
+                    <p>D. Walang teacher</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Synchronous = Zoom/Google Meet live. Asynchronous = modules, recorded videos.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>130. Ang "ICT" ay:</h3>
+                <div class="options">
+                    <p>A. Internet Computer Technology</p>
+                    <p class="correct">B. Information and Communications Technology</p>
+                    <p>C. Integrated Computer Teaching</p>
+                    <p>D. Information Class Technology</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> ICT = lahat ng tech na ginagamit sa communication at information.</div>
+            </div>
+
+            <!-- DEVELOPMENTAL READING 131-135 -->
+            <div class="question-box">
+                <h3>131. Ang unang step sa reading ay:</h3>
+                <div class="options">
+                    <p class="correct">A. Phonemic awareness</p>
+                    <p>B. Fluency</p>
+                    <p>C. Comprehension</p>
+                    <p>D. Vocabulary</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> 5 pillars: 1.Phonemic awareness 2.Phonics 3.Fluency 4.Vocabulary 5.Comprehension</div>
+            </div>
+
+            <div class="question-box">
+                <h3>132. Ang "phonics" ay:</h3>
+                <div class="options">
+                    <p>A. Pagbasa ng mabilis</p>
+                    <p class="correct">B. Letter-sound relationship</p>
+                    <p>C. Pag-unawa sa binasa</p>
+                    <p>D. Pagbigkas ng tula</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Phonics = pag-connect ng letra sa tunog nito.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>133. Ang "fluency" sa reading ay:</h3>
+                <div class="options">
+                    <p>A. Pag-unawa</p>
+                    <p class="correct">B. Bilis, accuracy, at expression sa pagbasa</p>
+                    <p>C. Pagkilala ng letra</p>
+                    <p>D. Pag-memorize</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Fluent reader = mabilis, tama, may expression.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>134. Ang "Marungko Approach" ay para sa:</h3>
+                <div class="options">
+                    <p>A. Math</p>
+                    <p class="correct">B. Pagbasa sa Filipino</p>
+                    <p>C. Science</p>
+                    <p>D. English</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Marungko = Filipino reading approach using frequent letters m,a,r,u,n,g,k,o.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>135. Ang "cloze test" ay:</h3>
+                <div class="options">
+                    <p>A. Multiple choice</p>
+                    <p class="correct">B. Fill in the blanks para ma-test comprehension</p>
+                    <p>C. Oral reading</p>
+                    <p>D. Spelling test</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Cloze = may tinanggal na words sa passage, fi-fill-upan ng reader.</div>
+            </div>
+
+            <!-- BUILDING RELATIONSHIPS 136-140 -->
+            <div class="question-box">
+                <h3>136. Ang "PTA" ay:</h3>
+                <div class="options">
+                    <p>A. Professional Teachers Association</p>
+                    <p class="correct">B. Parents-Teachers Association</p>
+                    <p>C. Principal Teachers Assembly</p>
+                    <p>D. Public Teachers Alliance</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> PTA = samahan ng magulang at guro para sa ikabubuti ng bata.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>137. Sino ang dapat unang kausapin kung may problem ang bata sa school?</h3>
+                <div class="options">
+                    <p>A. Principal agad</p>
+                    <p>B. Superintendent</p>
+                    <p class="correct">C. Classroom teacher/adviser</p>
+                    <p>D. Mayor</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Teacher muna bago i-escalate sa admin.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>138. Ang "brigada eskwela" ay:</h3>
+                <div class="options">
+                    <p>A. Exam ng students</p>
+                    <p class="correct">B. Bayanihan para maglinis/ayos ng school bago magpasukan</p>
+                    <p>C. Teacher training</p>
+                    <p>D. Graduation</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Brigada = volunteer community effort to prepare schools.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>139. Ang pinakamagandang way para ma-involve ang parents:</h3>
+                <div class="options">
+                    <p>A. Wag na kausapin</p>
+                    <p>B. Pagalit lang pag may problema</p>
+                    <p class="correct">C. Regular communication, positive at negative updates</p>
+                    <p>D. Sa card day lang</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Partnership dapat. Regular, 2-way communication.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>140. Ang "SBM" ay:</h3>
+                <div class="options">
+                    <p>A. School Board Meeting</p>
+                    <p class="correct">B. School-Based Management</p>
+                    <p>C. Student Body Management</p>
+                    <p>D. School Book Manual</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> SBM = decentralization, school mismo nagde-decide with stakeholders.</div>
+            </div>
+
+            <!-- MIXED CURRENT TRENDS 141-150 -->
+            <div class="question-box">
+                <h3>141. Ang "inclusive education" ay nangangahulugang:</h3>
+                <div class="options">
+                    <p>A. For honors lang</p>
+                    <p>B. For SPED lang</p>
+                    <p class="correct">C. Lahat ng bata, may disability man o wala, nag-aaral together</p>
+                    <p>D. For boys lang</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Inclusive = no child left behind, lahat welcome sa regular class.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>142. Ang "Differentiated Instruction" ay:</h3>
+                <div class="options">
+                    <p>A. Pare-pareho turo sa lahat</p>
+                    <p class="correct">B. Iba-ibang strategy based sa needs/level ng bata</p>
+                    <p>C. Wala nang turo</p>
+                    <p>D. Teacher lang magsasalita</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> DI = i-adjust ang content, process, product based sa readiness, interest, learning profile.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>143. Ang "Bloom's Taxonomy" lowest level:</h3>
+                <div class="options">
+                    <p class="correct">A. Remembering</p>
+                    <p>B. Understanding</p>
+                    <p>C. Applying</p>
+                    <p>D. Creating</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Revised Bloom's: Remember, Understand, Apply, Analyze, Evaluate, Create.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>144. Ang "Bloom's Taxonomy" highest level:</h3>
+                <div class="options">
+                    <p>A. Remembering</p>
+                    <p>B. Analyzing</p>
+                    <p>C. Evaluating</p>
+                    <p class="correct">D. Creating</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Creating = pinakamataas, paggawa ng bago/original.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>145. Ang "Child Protection Policy" ay nasa:</h3>
+                <div class="options">
+                    <p>A. RA 7836</p>
+                    <p class="correct">B. DepEd Order 40 s. 2012</p>
+                    <p>C. RA 10533</p>
+                    <p>D. RA 4670</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> DO 40 = zero tolerance sa child abuse, bullying, corporal punishment.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>146. Ang "positive discipline" ay:</h3>
+                <div class="options">
+                    <p>A. Pamamalo</p>
+                    <p>B. Pagmumura</p>
+                    <p class="correct">C. Pag-guide ng behavior nang walang violence/humiliation</p>
+                    <p>D. Walang rules</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Positive discipline = firm pero respectful, focus sa teaching not punishing.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>147. Ang "gender-fair" classroom ay:</h3>
+                <div class="options">
+                    <p>A. For girls lang</p>
+                    <p>B. For boys lang</p>
+                    <p class="correct">C. Equal opportunity at walang stereotype</p>
+                    <p>D. Walang boys at girls</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> Gender-fair = patas, walang "pang-babae/pang-lalaki lang" na task.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>148. Ang "PPST" ay:</h3>
+                <div class="options">
+                    <p>A. Philippine Public School Teachers</p>
+                    <p class="correct">B. Philippine Professional Standards for Teachers</p>
+                    <p>C. Public Primary School Test</p>
+                    <p>D. Professional Philippine School Test</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> PPST = standards ng good teaching. 7 domains, 37 strands.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>149. Ilang domains meron sa PPST?</h3>
+                <div class="options">
+                    <p>A. 5</p>
+                    <p>B. 6</p>
+                    <p class="correct">C. 7</p>
+                    <p>D. 8</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> 7 domains: 1.Content 2.Learning Environment 3.Diversity 4.Curriculum 5.Assessment 6.Community 7.Personal Growth.</div>
+            </div>
+
+            <div class="question-box">
+                <h3>150. Ang "MATATAG Curriculum" ay inilunsad noong:</h3>
+                <div class="options">
+                    <p>A. 2022</p>
+                    <p class="correct">B. 2023</p>
+                    <p>C. 2024</p>
+                    <p>D. 2025</p>
+                </div>
+                <div class="explanation"><strong>Explanation:</strong> MATATAG = MAke the curriculum relevant, TAke steps to accelerate, TAke good care of learners, Give support. Launched 2023, implementation 2024-2028.</div>
+            </div>
+
         </div>
     </div>
 
-    <div class="layout">
-        <div class="sidebar" id="sidebar">
-            <div class="sidebar-item active" onclick="showSection('dashboard', this)">
-                <i class="fas fa-chart-line"></i><span>Dashboard</span>
-            </div>
-            <div class="sidebar-item" onclick="showSection('sales', this)">
-                <i class="fas fa-shopping-cart"></i><span>Sales</span>
-            </div>
-            <div class="sidebar-item" onclick="showSection('repairs', this)">
-                <i class="fas fa-tools"></i><span>Repairs</span>
-            </div>
-            <div class="sidebar-item" onclick="showSection('expenses', this)">
-                <i class="fas fa-receipt"></i><span>Expenses</span>
-            </div>
-            <div class="sidebar-item" onclick="showSection('history', this)">
-                <i class="fas fa-history"></i><span>Transaction History</span>
-            </div>
-            <div class="sidebar-item" onclick="showSection('charts', this)">
-                <i class="fas fa-chart-bar"></i><span>Charts</span>
-            </div>
-            <div class="sidebar-item" onclick="showSection('staff', this)">
-                <i class="fas fa-users"></i><span>Add Staff</span>
-            </div>
-            <div class="sidebar-item" onclick="showSection('settings', this)">
-                <i class="fas fa-cog"></i><span>Settings</span>
-            </div>
-        </div>
-
-        <div class="main-content">
-            <!-- 6 CARDS - LAGING NANDITO -->
-            <div class="stats-grid">
-                <div class="stat-card revenue">
-                    <h3>Revenue</h3>
-                    <div class="value" id="revenueToday">₱0.00</div>
-                    <div class="sub" id="revenueSub">Today</div>
-                </div>
-                <div class="stat-card profit">
-                    <h3>Net Profit</h3>
-                    <div class="value profit" id="profitToday">₱0.00</div>
-                    <div class="sub">Revenue - Expenses - Capital</div>
-                </div>
-                <div class="stat-card capital">
-                    <h3>Total Capital</h3>
-                    <div class="value" id="capitalToday">₱0.00</div>
-                    <div class="sub">Puhunan</div>
-                </div>
-                <div class="stat-card expenses">
-                    <h3>Expenses</h3>
-                    <div class="value expense" id="expensesToday">₱0.00</div>
-                    <div class="sub">Total gastos</div>
-                </div>
-                <div class="stat-card sales">
-                    <h3>Total Sales</h3>
-                    <div class="value" id="salesToday">0</div>
-                    <div class="sub" id="salesQty">Quantity: 0 Items</div>
-                </div>
-                <div class="stat-card repairs">
-                    <h3>Total Repairs</h3>
-                    <div class="value" id="repairsToday">0</div>
-                    <div class="sub" id="repairsQty">Quantity: 0 Items</div>
-                </div>
-            </div>
-
-            <!-- DASHBOARD SECTION -->
-            <div class="content-section active" id="dashboard-section">
-                <div class="section-header">
-                    <h2><i class="fas fa-chart-line"></i> Dashboard Overview</h2>
-                    <div class="filters">
-                        <select id="dateFilter" onchange="filterDashboard()">
-                            <option value="daily">Daily</option>
-                            <option value="monthly">Monthly</option>
-                            <option value="yearly">Yearly</option>
-                        </select>
-                        <input type="date" id="selectDate" onchange="filterDashboard()">
-                    </div>
-                </div>
-                <p style="color: var(--text-muted);">Welcome to your admin dashboard. Select a menu from the sidebar to manage your shop.</p>
-            </div>
-
-            <!-- SALES SECTION -->
-            <div class="content-section" id="sales-section">
-                <div class="section-header">
-                    <h2><i class="fas fa-shopping-cart"></i> Record Sale - Accessories</h2>
-                </div>
-                <div class="form-grid">
-                    <div class="form-field"><label>Date & Time</label><input type="datetime-local" id="saleDate"></div>
-                    <div class="form-field"><label>Item Name</label><input type="text" id="itemName" placeholder="Bisen Charger Type C"></div>
-                    <div class="form-field"><label>Brand</label><input type="text" id="brand" placeholder="Samsung"></div>
-                    <div class="form-field"><label>Model/Variant</label><input type="text" id="variant" placeholder="Type C, Micro, IOS"></div>
-                    <div class="form-field"><label>Quantity</label><input type="number" id="qty" value="1" min="1"></div>
-                    <div class="form-field"><label>Capital Cost</label><input type="number" id="capitalCost" placeholder="0.00" step="0.01"></div>
-                    <div class="form-field"><label>Selling Price</label><input type="number" id="sellPrice" placeholder="0.00" step="0.01"></div>
-                    <div class="form-field"><label>Status</label><select id="saleStatus"><option value="completed">Completed</option><option value="pending">Pending</option></select></div>
-                    <div class="form-field"><label>Warranty</label><select id="warranty"><option>No Warranty</option><option>7 Days</option><option>30 Days</option><option>90 Days</option></select></div>
-                </div>
-                <button class="btn-primary" onclick="recordSale()"><i class="fas fa-plus"></i> Record Sale</button>
-            </div>
-
-            <!-- REPAIRS SECTION -->
-            <div class="content-section" id="repairs-section">
-                <div class="section-header">
-                    <h2><i class="fas fa-tools"></i> Record Repair</h2>
-                </div>
-                <div class="form-grid">
-                    <div class="form-field"><label>Date & Time</label><input type="datetime-local" id="repairDate"></div>
-                    <div class="form-field"><label>Customer Name</label><input type="text" id="customerName" placeholder="Juan Dela Cruz"></div>
-                    <div class="form-field"><label>Brand</label><input type="text" id="repairBrand" placeholder="iPhone"></div>
-                    <div class="form-field"><label>Model</label><input type="text" id="repairModel" placeholder="iPhone 11"></div>
-                    <div class="form-field"><label>Issue/Job</label><input type="text" id="issueJob" placeholder="Back Panel Replacement"></div>
-                    <div class="form-field"><label>Parts Capital</label><input type="number" id="partsCapital" placeholder="0.00" step="0.01"></div>
-                    <div class="form-field"><label>Service Price</label><input type="number" id="servicePrice" placeholder="0.00" step="0.01"></div>
-                    <div class="form-field"><label>Status</label><select id="repairStatus"><option value="done">Done</option><option value="pending">Pending</option></select></div>
-                    <div class="form-field"><label>Warranty</label><select id="repairWarranty"><option>No Warranty</option><option>7 Days</option><option>30 Days</option></select></div>
-                </div>
-                <button class="btn-primary" onclick="recordRepair()"><i class="fas fa-wrench"></i> Record Repair</button>
-            </div>
-
-            <!-- EXPENSES SECTION -->
-            <div class="content-section" id="expenses-section">
-                <div class="section-header">
-                    <h2><i class="fas fa-receipt"></i> Record Expense</h2>
-                </div>
-                <div class="form-grid">
-                    <div class="form-field"><label>Date & Time</label><input type="datetime-local" id="expenseDate"></div>
-                    <div class="form-field"><label>Expense Name</label><input type="text" id="expenseName" placeholder="Gas, Ulam, Rent"></div>
-                    <div class="form-field"><label>Amount</label><input type="number" id="expenseAmount" placeholder="0.00" step="0.01"></div>
-                    <div class="form-field"><label>Category</label><select id="expenseCat"><option>Food</option><option>Transport</option><option>Utilities</option><option>Rent</option><option>Supplies</option><option>Other</option></select></div>
-                </div>
-                <button class="btn-primary" onclick="recordExpense()"><i class="fas fa-plus"></i> Record Expense</button>
-            </div>
-
-            <!-- TRANSACTION HISTORY -->
-            <div class="content-section" id="history-section">
-                <div class="section-header">
-                    <h2><i class="fas fa-history"></i> Transaction History</h2>
-                </div>
-                <div class="filters">
-                    <select id="typeFilter" onchange="loadTransactions()">
-                        <option value="all">All Logs</option>
-                        <option value="sale">Sales</option>
-                        <option value="repair">Repairs</option>
-                        <option value="expense">Expenses</option>
-                    </select>
-                    <select id="timeFilter" onchange="loadTransactions()">
-                        <option value="daily">Daily</option>
-                        <option value="monthly">Monthly</option>
-                        <option value="yearly">Yearly</option>
-                    </select>
-                    <input type="date" id="filterDate" onchange="loadTransactions()">
-                    <div class="search-box">
-                        <i class="fas fa-search"></i>
-                        <input type="text" id="searchInput" placeholder="Search item, customer, brand, model..." onkeyup="loadTransactions()">
-                    </div>
-                    <span class="clear-filter" onclick="clearFilters()"><i class="fas fa-times"></i> Clear</span>
-                </div>
-                <div class="table-wrapper">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Type</th>
-                                <th>Complete Details</th>
-                                <th>Date/Time</th>
-                                <th>Value/Profit</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="transTable">
-                            <tr><td colspan="6" style="text-align:center; color:var(--text-muted); padding: 40px;">Loading transactions...</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- CHARTS SECTION -->
-            <div class="content-section" id="charts-section">
-                <div class="section-header">
-                    <h2><i class="fas fa-chart-bar"></i> Analytics Charts</h2>
-                    <div class="filters">
-                        <select id="chartFilter" onchange="loadChart()">
-                            <option value="daily">Daily</option>
-                            <option value="monthly">Monthly</option>
-                        </select>
-                        <input type="month" id="chartMonth" onchange="loadChart()">
-                    </div>
-                </div>
-                <div class="chart-container">
-                    <canvas id="mainChart"></canvas>
-                </div>
-            </div>
-
-            <!-- ADD STAFF SECTION -->
-            <div class="content-section" id="staff-section">
-                <div class="section-header">
-                    <h2><i class="fas fa-users"></i> Staff Management</h2>
-                </div>
-                <div class="form-grid">
-                    <div class="form-field"><label>Staff Full Name</label><input type="text" id="staffName" placeholder="Maria Santos"></div>
-                    <div class="form-field"><label>Staff Email</label><input type="email" id="staffEmail" placeholder="staff@gmail.com"></div>
-                    <div class="form-field"><label>Staff Password</label><input type="password" id="staffPassword" placeholder="Minimum 6 characters"></div>
-                </div>
-                <button class="btn-primary" onclick="createStaff()"><i class="fas fa-user-plus"></i> Create Staff Account</button>
-
-                <h3 style="margin-top: 30px; margin-bottom: 15px;">Staff List</h3>
-                <div class="table-wrapper">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Status</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="staffTable">
-                            <tr><td colspan="4" style="text-align:center; color:var(--text-muted);">Loading...</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- SETTINGS SECTION -->
-            <div class="content-section" id="settings-section">
-                <div class="section-header">
-                    <h2><i class="fas fa-cog"></i> Settings</h2>
-                </div>
-                <div class="form-field">
-                    <label>Theme Picker</label>
-                    <select id="themePicker" onchange="changeTheme()">
-                        <option value="dark">Dark Blue</option>
-                        <option value="light">Light</option>
-                        <option value="purple">Purple</option>
-                        <option value="green">Green</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal" id="editModal">
-        <div class="modal-inner">
-            <div class="modal-head">
-                <h2>Edit Transaction</h2>
-                <button class="modal-close" onclick="closeEditModal()">&times;</button>
-            </div>
-            <div id="editForm"></div>
-            <button class="btn-primary" onclick="saveEdit()" style="margin-top: 15px; width: 100%;">Save Changes</button>
-        </div>
-    </div>
-
-    <script type="module" src="admin-app.js"></script>
+<script>
+function showSection(section) {
+    document.querySelectorAll('.controls button').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+    
+    if(section === 'all') {
+        document.getElementById('genedSection').classList.remove('hide');
+        document.getElementById('profedSection').classList.remove('hide');
+    } else if(section === 'gened') {
+        document.getElementById('genedSection').classList.remove('hide');
+        document.getElementById('profedSection').classList.add('hide');
+    } else {
+        document.getElementById('genedSection').classList.add('hide');
+        document.getElementById('profedSection').classList.remove('hide');
+    }
+    window.scrollTo(0, 0);
+}
+</script>
 </body>
 </html>
