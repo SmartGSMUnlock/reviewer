@@ -1,0 +1,459 @@
+‎<!DOCTYPE html>
+‎<html lang="en">
+‎<head>
+‎    <meta charset="UTF-8">
+‎    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+‎    <title>LET Elementary 2026 - FULL BOARD EXAM 150 Items</title>
+‎    <style>
+‎        * { margin: 0; padding: 0; box-sizing: border-box; }
+‎        body { font-family: 'Segoe UI', Arial, sans-serif; background: #1a202c; padding: 15px; color: #1a202c; }
+‎        .container { max-width: 900px; margin: 0 auto; background: white; border-radius: 12px; overflow: hidden; }
+‎        .header { background: linear-gradient(135deg, #c53030, #9b2c2c); color: white; padding: 25px; text-align: center; }
+‎        .header h1 { font-size: 26px; margin-bottom: 5px; }
+‎        .header p { opacity: 0.9; }
+‎        .warning { background: #fed7d7; color: #742a2a; padding: 12px; text-align: center; font-weight: bold; font-size: 14px; }
+‎        .stats { display: flex; justify-content: space-around; background: #2d3748; color: white; padding: 15px; flex-wrap: wrap; }
+‎        .stat-box { text-align: center; margin: 5px 15px; }
+‎        .stat-box .label { font-size: 12px; opacity: 0.8; }
+‎        .stat-box .value { font-size: 20px; font-weight: bold; }
+‎        .timer { color: #fbd38d!important; }
+‎        .progress-bar { background: #4a5568; height: 6px; }
+‎        .progress-fill { background: #48bb78; height: 100%; width: 0%; transition: width 0.3s; }
+‎        .quiz-area { padding: 25px; min-height: 450px; }
+‎        .question { margin-bottom: 25px; padding: 20px; background: #f7fafc; border-radius: 8px; border-left: 4px solid #c53030; display: none; }
+‎        .question.active { display: block; }
+‎        .question h3 { margin-bottom: 15px; font-size: 16px; line-height: 1.6; }
+‎        .options label { display: block; padding: 14px; margin: 10px 0; background: white; border: 2px solid #cbd5e0; border-radius: 6px; cursor: pointer; transition: all 0.2s; }
+‎        .options label:hover { border-color: #c53030; background: #fff5f5; }
+‎        .options input[type="radio"] { margin-right: 12px; transform: scale(1.2); }
+‎        .nav-buttons { display: flex; justify-content: space-between; padding: 20px 25px; background: #f7fafc; gap: 10px; }
+‎        button { padding: 14px 28px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 15px; flex: 1; }
+‎        .btn-prev { background: #a0aec0; color: white; }
+‎        .btn-next { background: #c53030; color: white; }
+‎        .btn-submit { background: #38a169; color: white; width: calc(100% - 50px); margin: 0 25px 25px; font-size: 18px; }
+‎        button:disabled { opacity: 0.4; cursor: not-allowed; }
+‎        .result { display: none; padding: 30px; text-align: center; }
+‎        .result.show { display: block; }
+‎        .result-card { background: #f7fafc; padding: 30px; border-radius: 10px; margin: 15px 0; }
+‎        .pass { border: 4px solid #38a169; color: #22543d; }
+‎        .fail { border: 4px solid #e53e3e; color: #742a2a; }
+‎        .score-big { font-size: 56px; font-weight: bold; margin: 20px 0; }
+‎        .breakdown { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 25px; }
+‎        .breakdown div { background: white; padding: 20px; border-radius: 8px; border: 2px solid #e2e8f0; }
+‎        .legend { display: flex; justify-content: center; gap: 20px; padding: 15px; background: #edf2f7; flex-wrap: wrap; }
+‎        .legend-item { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+‎        .legend-box { width: 20px; height: 20px; border-radius: 3px; }
+‎        @media (max-width: 600px) { .breakdown { grid-template-columns: 1fr; } .stats { font-size: 13px; } .nav-buttons { flex-direction: column; } }
+‎        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+‎    </style>
+‎</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>LET ELEMENTARY 2026 BOARD EXAM SIMULATION</h1>
+            <p>150 Items | 4 Hours | PRC Standard Scoring</p>
+        </div>
+
+        <div class="warning">
+            ⚠️ HINDI KA NA MAKAKABALIK PAG NA-SUBMIT MO NA. SIGURADUHIN MONG TAPOS KA NA.
+        </div>
+
+        <div class="stats">
+            <div class="stat-box">
+                <div class="label">TIME REMAINING</div>
+                <div class="value timer" id="timer">04:00:00</div>
+            </div>
+            <div class="stat-box">
+                <div class="label">ANSWERED</div>
+                <div class="value"><span id="answered">0</span>/150</div>
+            </div>
+            <div class="stat-box">
+                <div class="label">QUESTION</div>
+                <div class="value"><span id="current">1</span>/150</div>
+            </div>
+            <div class="stat-box">
+                <div class="label">SECTION</div>
+                <div class="value" id="section">GENED</div>
+            </div>
+        </div>
+
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+        <div class="legend">
+            <div class="legend-item"><div class="legend-box" style="background: #c53030;"></div> GenEd 1-75</div>
+            <div class="legend-item"><div class="legend-box" style="background: #2b6cb0;"></div> ProfEd 76-150</div>
+        </div>
+
+        <div class="quiz-area" id="quizArea"></div>
+
+        <div class="nav-buttons">
+            <button class="btn-prev" onclick="prevQuestion()" id="prevBtn" disabled>◀ Previous</button>
+            <button class="btn-next" onclick="nextQuestion()" id="nextBtn">Next ▶</button>
+        </div>
+
+        <button class="btn-submit" onclick="confirmSubmit()" id="submitBtn">SUBMIT FINAL ANSWERS</button>
+
+        <div class="result" id="resultArea"></div>
+    </div>
+
+<script>
+const questions = [
+    {q:"1. Alin ang may wastong gamit ng gitling?",a:"B",o:["Nag-aral mabuti","Mag-aaral ako","Pag-asa ng bayan","Bawat-isa"]},
+    {q:"2. \"It takes two to tango\" means:",a:"B",o:["Dancing needs a partner","Both parties are responsible","Two is better than one","Tango is for couples"]},
+    {q:"3. Which sentence is grammatically correct?",a:"B",o:["She don't like coffee.","She doesn't like coffee.","She not like coffee.","She no like coffee."]},
+    {q:"4. The plural form of \"child\" is:",a:"B",o:["Childs","Children","Childes","Childrens"]},
+    {q:"5. Choose the synonym of \"Benevolent\":",a:"B",o:["Cruel","Kind","Selfish","Angry"]},
+    {q:"6. What is the antonym of \"Expand\"?",a:"C",o:["Grow","Increase","Contract","Enlarge"]},
+    {q:"7. Identify the figure of speech: \"The wind whispered through the trees.\"",a:"B",o:["Simile","Personification","Metaphor","Hyperbole"]},
+    {q:"8. Which is a proper noun?",a:"B",o:["city","Manila","country","river"]},
+    {q:"9. \"She is as brave as a lion.\" This is:",a:"A",o:["Simile","Metaphor","Personification","Alliteration"]},
+    {q:"10. What is the past tense of \"go\"?",a:"B",o:["Goed","Went","Gone","Going"]},
+    {q:"11. Choose the correct spelling:",a:"B",o:["Recieve","Receive","Recive","Receve"]},
+    {q:"12. The main idea of a paragraph is found in the:",a:"A",o:["Topic sentence","Supporting details","Conclusion","Title"]},
+    {q:"13. \"Neither John nor Mary ___ coming.\"",a:"B",o:["are","is","were","have"]},
+    {q:"14. Which word is an adverb?",a:"C",o:["Happy","Happiness","Happily","Happen"]},
+    {q:"15. \"To be or not to be\" is from:",a:"A",o:["Hamlet","Romeo and Juliet","Macbeth","Othello"]},
+    {q:"16. Sino ang sumulat ng 'Florante at Laura'?",a:"A",o:["Francisco Balagtas","Jose Rizal","Lope K. Santos","Amado Hernandez"]},
+    {q:"17. Ang \"anak-pawis\" ay nangangahulugang:",a:"B",o:["Anak na tamad","Manggagawa","Anak na masipag","Mahirap"]},
+    {q:"18. Alin ang tambalang salita?",a:"B",o:["Maganda","Bahaghari","Tumakbo","Malaki"]},
+    {q:"19. Ang wastong baybay ng \"kasiyahan\" ay:",a:"B",o:["Kasiyahann","Kasiyahan","Kasayahan","Kasyahan"]},
+    {q:"20. \"Ang hindi marunong lumingon sa pinanggalingan...\" ay kay:",a:"A",o:["Jose Rizal","Andres Bonifacio","Emilio Jacinto","Apolinario Mabini"]},
+    {q:"21. Uri ng pangungusap na nagsasaad ng damdamin:",a:"C",o:["Patanong","Pautos","Padamdam","Pasalaysay"]},
+    {q:"22. Ang \"Noli Me Tangere\" ay sinulat ni:",a:"A",o:["Jose Rizal","Marcelo H. del Pilar","Graciano Lopez Jaena","Antonio Luna"]},
+    {q:"23. Alin ang HINDI bahagi ng pananalita?",a:"C",o:["Pangngalan","Pandiwa","Parirala","Pang-uri"]},
+    {q:"24. Ang \"makata\" ay:",a:"B",o:["Mang-aawit","Manunulat ng tula","Mananalaysay","Mandudula"]},
+    {q:"25. Tayutay: \"Ang kanyang ngiti ay araw sa tag-ulan\"",a:"B",o:["Pagtutulad","Metapora","Pagmamalabis","Pagsasatao"]},
+    {q:"26. Ang wikang pambansa ng Pilipinas ay:",a:"B",o:["Tagalog","Filipino","Ingles","Espanyol"]},
+    {q:"27. Kailan ang Buwan ng Wika?",a:"B",o:["Hulyo","Agosto","Setyembre","Hunyo"]},
+    {q:"28. Ang \"ma\" sa \"maganda\" ay:",a:"A",o:["Unlapi","Gitlapi","Hulapi","Kabilaan"]},
+    {q:"29. Alin ang diptonggo?",a:"B",o:["aa","aw","ii","oo"]},
+    {q:"30. \"Sumulat\" ay nasa aspetong:",a:"C",o:["Perpektibo","Imperpektibo","Kontemplatibo","Pawatas"]},
+    {q:"31. What is 15% of 200?",a:"C",o:["15","20","30","35"]},
+    {q:"32. Solve: 2x - 8 = 10",a:"B",o:["1","9","18","26"]},
+    {q:"33. Area of rectangle 8m x 5m:",a:"C",o:["13 m²","26 m²","40 m²","80 m²"]},
+    {q:"34. Next in sequence: 2, 4, 8, 16, ___?",a:"C",o:["20","24","32","64"]},
+    {q:"35. Simplify: 3/4 + 1/2",a:"B",o:["4/6","5/4","3/8","4/8"]},
+    {q:"36. Square root of 144:",a:"B",o:["11","12","13","14"]},
+    {q:"37. If dozen eggs = ₱96, one egg =?",a:"B",o:["₱6","₱8","₱9","₱12"]},
+    {q:"38. 25% as fraction:",a:"C",o:["1/2","1/3","1/4","1/5"]},
+    {q:"39. Perimeter of square side 6cm:",a:"C",o:["12 cm","18 cm","24 cm","36 cm"]},
+    {q:"40. 3³ equals:",a:"C",o:["6","9","27","81"]},
+    {q:"41. Average of 10, 20, 30:",a:"B",o:["15","20","25","60"]},
+    {q:"42. Degrees in a triangle:",a:"B",o:["90°","180°","270°","360°"]},
+    {q:"43. Convert 0.75 to percent:",a:"B",o:["7.5%","75%","0.75%","750%"]},
+    {q:"44. If 5x = 35, x =?",a:"C",o:["5","6","7","30"]},
+    {q:"45. LCM of 4 and 6:",a:"C",o:["2","10","12","24"]},
+    {q:"46. The smallest unit of life:",a:"B",o:["Atom","Cell","Tissue","Organ"]},
+    {q:"47. Process by which plants make food:",a:"B",o:["Respiration","Photosynthesis","Transpiration","Germination"]},
+    {q:"48. Planet closest to the sun:",a:"A",o:["Mercury","Venus","Earth","Mars"]},
+    {q:"49. Water boils at:",a:"C",o:["0°C","50°C","100°C","212°C"]},
+    {q:"50. Which is NOT a state of matter?",a:"D",o:["Solid","Liquid","Gas","Energy"]},
+    {q:"51. Human heart has how many chambers?",a:"C",o:["2","3","4","5"]},
+    {q:"52. Chemical symbol for Gold:",a:"C",o:["Go","Gd","Au","Ag"]},
+    {q:"53. Layer of Earth we live on:",a:"A",o:["Crust","Mantle","Outer Core","Inner Core"]},
+    {q:"54. Force that pulls objects to Earth:",a:"B",o:["Magnetism","Gravity","Friction","Inertia"]},
+    {q:"55. Gas humans breathe in:",a:"B",o:["Carbon dioxide","Oxygen","Nitrogen","Hydrogen"]},
+    {q:"56. Largest organ of human body:",a:"C",o:["Liver","Brain","Skin","Lung"]},
+    {q:"57. H2O is the formula for:",a:"C",o:["Hydrogen","Oxygen","Water","Salt"]},
+    {q:"58. Animals that eat only plants:",a:"A",o:["Herbivores","Carnivores","Omnivores","Decomposers"]},
+    {q:"59. What causes day and night?",a:"B",o:["Earth's revolution","Earth's rotation","Moon's rotation","Sun's movement"]},
+    {q:"60. Three R's of waste management:",a:"A",o:["Reduce, Reuse, Recycle","Read, Write, Arithmetic","Run, Rest, Recover","Remove, Replace, Repair"]},
+    {q:"61. The smallest continent:",a:"C",o:["Europe","Antarctica","Australia","South America"]},
+    {q:"62. \"Ama ng Wikang Pambansa\":",a:"B",o:["Jose Rizal","Manuel L. Quezon","Andres Bonifacio","Emilio Aguinaldo"]},
+    {q:"63. Unang republika sa Asya:",a:"A",o:["Unang Republika ng Pilipinas","Republika ng China","Republika ng India","Republika ng Japan"]},
+    {q:"64. Pinakamataas na batas ng Pilipinas:",a:"B",o:["Civil Code","Constitution","Penal Code","Family Code"]},
+    {q:"65. Araw ng Kalayaan:",a:"B",o:["Hunyo 12, 1896","Hunyo 12, 1898","Hulyo 4, 1946","Agosto 30, 1896"]},
+    {q:"66. Longest river sa Pilipinas:",a:"B",o:["Pasig River","Cagayan River","Agusan River","Pampanga River"]},
+    {q:"67. Ilang rehiyon meron ang Pilipinas?",a:"C",o:["16","17","18","19"]},
+    {q:"68. Sumulat ng \"Mi Ultimo Adios\":",a:"A",o:["Jose Rizal","Andres Bonifacio","Marcelo H. del Pilar","Emilio Jacinto"]},
+    {q:"69. Pag-aaral ng population:",a:"B",o:["Geography","Demography","Anthropology","Sociology"]},
+    {q:"70. Capital ng Australia:",a:"C",o:["Sydney","Melbourne","Canberra","Perth"]},
+    {q:"71. Utak ng computer:",a:"B",o:["RAM","CPU","Hard Drive","Motherboard"]},
+    {q:"72. \"WWW\" means:",a:"B",o:["World Wide Weather","World Wide Web","World Web Wide","Wide World Web"]},
+    {q:"73. Shortcut para mag-copy:",a:"B",o:["Ctrl + X","Ctrl + C","Ctrl + V","Ctrl + P"]},
+    {q:"74..docx ay file ng:",a:"B",o:["Excel","Microsoft Word","PowerPoint","PDF"]},
+    {q:"75. Program na sumisira sa computer:",a:"C",o:["Software","Application","Virus/Malware","Driver"]},
+    {q:"76. Ayon sa RA 7836, qualified mag-LET:",a:"B",o:["High school graduate","Bachelor's degree holder in Educ or with 18 units ProfEd","Kahit sino","Master's degree holder lang"]},
+    {q:"77. Code of Ethics for Professional Teachers ay nasa:",a:"B",o:["RA 4670","Board Resolution No. 435 s. 1997","RA 7836","RA 10533"]},
+    {q:"78. Alin ang HINDI 21st Century Skill?",a:"B",o:["Critical thinking","Rote memorization","Collaboration","Creativity"]},
+    {q:"79. Magna Carta for Public School Teachers:",a:"A",o:["RA 4670","RA 7836","RA 9155","RA 10533"]},
+    {q:"80. Minimum teaching load ng public teacher:",a:"C",o:["4 hours","5 hours","6 hours","8 hours"]},
+    {q:"81. CPD units for license renewal:",a:"B",o:["15 units","45 units every 3 years","30 units","60 units"]},
+    {q:"82. Sino dapat mag-evaluate sa teacher?",a:"C",o:["Students lang","Principal lang","Multiple: peer, self, supervisor, students","Parents lang"]},
+    {q:"83. Enhanced Basic Education Act:",a:"C",o:["RA 7836","RA 9155","RA 10533","RA 10912"]},
+    {q:"84. \"Loco Parentis\" means:",a:"B",o:["Mahal ng teacher ang students","Teacher stands as parent sa school","Parents dapat magturo","Students dapat sumunod"]},
+    {q:"85. Validity ng PRC license:",a:"B",o:["1 year","3 years","5 years","Lifetime"]},
+    {q:"86. Ayon kay Piaget, 2-7 years old:",a:"B",o:["Sensorimotor","Preoperational","Concrete Operational","Formal Operational"]},
+    {q:"87. Ayon kay Erikson, conflict ng adolescence:",a:"C",o:["Trust vs Mistrust","Autonomy vs Shame","Identity vs Role Confusion","Intimacy vs Isolation"]},
+    {q:"88. Ayon kay Vygotsky, ZPD ay:",a:"B",o:["Kayang gawin mag-isa","Agwat ng kayang gawin mag-isa vs with help","Hindi kayang gawin","Kayang gawin ng teacher"]},
+    {q:"89. Ayon kay Kohlberg, pinakamataas na moral level:",a:"C",o:["Pre-conventional","Conventional","Post-conventional","Pre-moral"]},
+    {q:"90. \"Tabula rasa\" ni Locke:",a:"B",o:["Bata ay mayaman","Bata ay blank slate","Bata ay matalino","Bata ay masama"]},
+    {q:"91. \"Scaffolding\" sa education:",a:"B",o:["Pag-build ng school","Temporary support para matuto","Pag-akyat sa hagdan","Pag-suspend ng student"]},
+    {q:"92. Ayon kay Gardner, ilang multiple intelligences?",a:"C",o:["7","8","9","10"]},
+    {q:"93. \"Cephalocaudal\" development:",a:"A",o:["Head to toe development","Toe to head","Center to outside","Outside to center"]},
+    {q:"94. \"Proximodistal\" development:",a:"B",o:["Head to toe","Center to extremities","Toe to head","Outside to center"]},
+    {q:"95. Ayon kay Freud, ang \"id\" ay:",a:"B",o:["Moral component","Pleasure principle","Reality principle","Conscience"]},
+    {q:"96. \"Constructivism\" naniniwala na:",a:"B",o:["Teacher ang source","Students construct their own knowledge","Memorization ang best","Wala nang turo"]},
+    {q:"97. \"Behaviorism\" focus sa:",a:"B",o:["Mind","Observable behavior","Emotions","Dreams"]},
+    {q:"98. \"Law of Effect\" ni Thorndike:",a:"B",o:["Practice makes perfect","Behavior na may reward, uulitin","Matututo pag ready","Bawal magkamali"]},
+    {q:"99. \"Classical conditioning\" kay:",a:"A",o:["Pavlov","Skinner","Bandura","Piaget"]},
+    {q:"100. \"Operant conditioning\" kay:",a:"B",o:["Pavlov","Skinner","Bandura","Bruner"]},
+    {q:"101. \"Social learning theory\" kay:",a:"C",o:["Piaget","Vygotsky","Bandura","Maslow"]},
+    {q:"102. Pinakamataas sa Maslow's Hierarchy:",a:"C",o:["Safety needs","Esteem needs","Self-actualization","Love/belonging"]},
+    {q:"103. \"Zone of Proximal Development\" kay:",a:"B",o:["Piaget","Vygotsky","Bruner","Ausubel"]},
+    {q:"104. \"Meaningful learning\" kay:",a:"B",o:["Bruner","Ausubel","Gagne","Bloom"]},
+    {q:"105. \"Discovery learning\" kay:",a:"A",o:["Bruner","Ausubel","Gagne","Kohlberg"]},
+    {q:"106. \"Formative assessment\" ginagawa:",a:"B",o:["Pagkatapos ng lesson","Habang nagtuturo para mag-adjust","End of quarter","End of year"]},
+    {q:"107. \"Summative assessment\" ay:",a:"B",o:["Quiz lang","Assessment OF learning, sa dulo","Recitation","Seatwork"]},
+    {q:"108. \"TOS\" means:",a:"B",o:["Test of Standards","Table of Specifications","Terms of Service","Type of Students"]},
+    {q:"109. Test na nagko-compare ng student sa iba:",a:"A",o:["Norm-referenced","Criterion-referenced","Diagnostic","Placement"]},
+    {q:"110. \"Rubric\" ginagamit sa:",a:"B",o:["Multiple choice","Performance-based assessment","True or False","Matching type"]},
+    {q:"111. \"Validity\" ng test:",a:"B",o:["Consistent ba","Sinusukat ba talaga ang dapat sukatin","Madali ba","Mahaba ba"]},
+    {q:"112. \"Reliability\" ng test:",a:"A",o:["Consistency ng results","Validity","Difficulty","Length"]},
+    {q:"113. \"Portfolio assessment\" ay:",a:"B",o:["Isang exam lang","Collection ng student work over time","Quiz","Recitation"]},
+    {q:"114. \"Diagnostic test\" ginagawa:",a:"A",o:["Bago mag-start para malaman prior knowledge","Pagkatapos ng lesson","Mid-quarter","End of year"]},
+    {q:"115. Sa K-12, passing grade:",a:"B",o:["70","75","80","85"]},
+    {q:"116. \"Hidden curriculum\" ay:",a:"B",o:["Nasa book","Unwritten, unofficial, implicit lessons","Nasa lesson plan","Nasa exam"]},
+    {q:"117. \"Spiral curriculum\" kay:",a:"A",o:["Bruner","Tyler","Taba","Dewey"]},
+    {q:"118. \"Tyler Rationale\" may ilan questions?",a:"B",o:["3","4","5","6"]},
+    {q:"119. K-12 curriculum ilang taon?",a:"C",o:["10 years","11 years","13 years (K+6+4+2)","14 years"]},
+    {q:"120. \"MTB-MLE\" ay:",a:"B",o:["Math curriculum","Mother Tongue-Based Multilingual Education","Music curriculum","MAPEH curriculum"]},
+    {q:"121. \"Null curriculum\" ay:",a:"B",o:["Walang curriculum","Mga hindi tinuturo sa school","Extra curriculum","Hidden curriculum"]},
+    {q:"122. \"Learning competencies\" ay:",a:"B",o:["Topics lang","Knowledge, skills, attitudes na dapat matutunan","Books lang","Exams lang"]},
+    {q:"123. \"UbD\" means:",a:"B",o:["Universal by Design","Understanding by Design","United by Design","Under by Design"]},
+    {q:"124. Grade 11-12 ay:",a:"B",o:["Junior High School","Senior High School","Elementary","College"]},
+    {q:"125. \"SHS tracks\" sa K-12 ay ilan?",a:"B",o:["3","4","5","6"]},
+    {q:"126. \"TPACK\" means:",a:"B",o:["Teaching Pack","Technological Pedagogical Content Knowledge","Teacher Planning and Curriculum Knowledge","Teaching Performance and Content Knowledge"]},
+    {q:"127. \"Blended learning\" ay:",a:"C",o:["Pure online lang","Pure face-to-face lang","Combination ng online at face-to-face","Walang teacher"]},
+    {q:"128. \"LMS\" ay:",a:"B",o:["Learning Made Simple","Learning Management System","Local Management School","Learning Module System"]},
+    {q:"129. \"Synchronous learning\" ay:",a:"B",o:["Self-paced, kahit anong oras","Real-time, sabay-sabay","Walang internet","Walang teacher"]},
+    {q:"130. \"ICT\" ay:",a:"B",o:["Internet Computer Technology","Information and Communications Technology","Integrated Computer Teaching","Information Class Technology"]},
+    {q:"131. Unang step sa reading:",a:"A",o:["Phonemic awareness","Fluency","Comprehension","Vocabulary"]},
+    {q:"132. \"Phonics\" ay:",a:"B",o:["Pagbasa ng mabilis","Letter-sound relationship","Pag-unawa sa binasa","Pagbigkas ng tula"]},
+    {q:"133. \"Fluency\" sa reading:",a:"B",o:["Pag-unawa","Bilis, accuracy, at expression sa pagbasa","Pagkilala ng letra","Pag-memorize"]},
+    {q:"134. \"Marungko Approach\" para sa:",a:"B",o:["Math","Pagbasa sa Filipino","Science","English"]},
+    {q:"135. \"Cloze test\" ay:",a:"B",o:["Multiple choice","Fill in the blanks para ma-test comprehension","Oral reading","Spelling test"]},
+    {q:"136. \"PTA\" ay:",a:"B",o:["Professional Teachers Association","Parents-Teachers Association","Principal Teachers Assembly","Public Teachers Alliance"]},
+    {q:"137. Sino dapat unang kausapin kung may problem ang bata?",a:"C",o:["Principal agad","Superintendent","Classroom teacher/adviser","Mayor"]},
+    {q:"138. \"Brigada eskwela\" ay:",a:"B",o:["Exam ng students","Bayanihan para maglinis/ayos ng school","Teacher training","Graduation"]},
+    {q:"139. Pinakamagandang way para ma-involve ang parents:",a:"C",o:["Wag na kausapin","Pagalit lang pag may problema","Regular communication, positive at negative","Sa card day lang"]},
+    {q:"140. \"SBM\" ay:",a:"B",o:["School Board Meeting","School-Based Management","Student Body Management","School Book Manual"]},
+    {q:"141. \"Inclusive education\" ay:",a:"C",o:["For honors lang","For SPED lang","Lahat ng bata, may disability man o wala, nag-aaral together","For boys lang"]},
+    {q:"142. \"Differentiated Instruction\" ay:",a:"B",o:["Pare-pareho turo sa lahat","Iba-ibang strategy based sa needs/level","Wala nang turo","Teacher lang magsasalita"]},
+    {q:"143. \"Bloom's Taxonomy\" lowest level:",a:"A",o:["Remembering","Understanding","Applying","Creating"]},
+    {q:"144. \"Bloom's Taxonomy\" highest level:",a:"D",o:["Remembering","Analyzing","Evaluating","Creating"]},
+    {q:"145. \"Child Protection Policy\" nasa:",a:"B",o:["RA 7836","DepEd Order 40 s. 2012","RA 10533","RA 4670"]},
+    {q:"146. \"Positive discipline\" ay:",a:"C",o:["Pamamalo","Pagmumura","Pag-guide ng behavior nang walang violence","Walang rules"]},
+    {q:"147. \"Gender-fair\" classroom ay:",a:"C",o:["For girls lang","For boys lang","Equal opportunity at walang stereotype","Walang boys at girls"]},
+    {q:"148. \"PPST\" ay:",a:"B",o:["Philippine Public School Teachers","Philippine Professional Standards for Teachers","Public Primary School Test","Professional Philippine School Test"]},
+    {q:"149. Ilang domains sa PPST?",a:"C",o:["5","6","7","8"]},
+    {q:"150. \"MATATAG Curriculum\" inilunsad noong:",a:"B",o:["2022","2023","2024","2025"]}
+];
+
+let currentQ = 0;
+let answers = {};
+let timeLeft = 4 * 60 * 60;
+let timerInterval;
+let examStarted = false;
+
+function initQuiz() {
+    if(!examStarted) {
+        if(!confirm("Sigurado ka na? 4 HOURS ang exam na to. Pag nag-start ka, hindi na pwede i-pause.\n\nClick OK para mag-start.")) {
+            return;
+        }
+        examStarted = true;
+    }
+    renderQuestion();
+    startTimer();
+    updateStats();
+}
+
+function renderQuestion() {
+    const q = questions[currentQ];
+    const sectionName = currentQ < 75? "GENED" : "PROFED";
+    document.getElementById('section').textContent = sectionName;
+    document.getElementById('section').style.color = currentQ < 75? "#c53030" : "#2b6cb0";
+
+    const html = `
+        <div class="question active">
+            <h3>${q.q}</h3>
+            <div class="options">
+                ${q.o.map((opt, i) => `
+                    <label>
+                        <input type="radio" name="q${currentQ}" value="${String.fromCharCode(65+i)}"
+                        ${answers[currentQ] === String.fromCharCode(65+i)? 'checked' : ''}
+                        onchange="saveAnswer(${currentQ}, '${String.fromCharCode(65+i)}')">
+                        ${String.fromCharCode(65+i)}. ${opt}
+                    </label>
+                `).join('')}
+            </div>
+        </div>
+    `;
+    document.getElementById('quizArea').innerHTML = html;
+    document.getElementById('current').textContent = currentQ + 1;
+    document.getElementById('prevBtn').disabled = currentQ === 0;
+    document.getElementById('nextBtn').disabled = currentQ === 149;
+    updateProgress();
+}
+
+function saveAnswer(qIndex, value) {
+    answers[qIndex] = value;
+    updateStats();
+    updateProgress();
+}
+
+function updateStats() {
+    document.getElementById('answered').textContent = Object.keys(answers).length;
+}
+
+function updateProgress() {
+    const percent = (Object.keys(answers).length / 150) * 100;
+    document.getElementById('progressFill').style.width = percent + '%';
+}
+
+function nextQuestion() {
+    if(currentQ < 149) { currentQ++; renderQuestion(); }
+}
+
+function prevQuestion() {
+    if(currentQ > 0) { currentQ--; renderQuestion(); }
+}
+
+function startTimer() {
+    timerInterval = setInterval(() => {
+        timeLeft--;
+        let h = Math.floor(timeLeft / 3600);
+        let m = Math.floor((timeLeft % 3600) / 60);
+        let s = timeLeft % 60;
+        document.getElementById('timer').textContent =
+            `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+
+        if(timeLeft <= 300 && timeLeft > 0) {
+            document.getElementById('timer').style.color = '#fc8181';
+            document.getElementById('timer').style.animation = 'blink 1s infinite';
+        }
+
+        if(timeLeft <= 0) {
+            clearInterval(timerInterval);
+            alert("TIME'S UP! Automatic submit na.");
+            submitExam();
+        }
+    }, 1000);
+}
+
+function confirmSubmit() {
+    const unanswered = 150 - Object.keys(answers).length;
+    if(unanswered > 0) {
+        if(!confirm(`May ${unanswered} items ka pang HINDI nasagutan.\n\nSigurado ka bang i-submit mo na? HINDI KA NA MAKAKABALIK.`)) {
+            return;
+        }
+    } else {
+        if(!confirm("Lahat nasagutan mo na. FINAL SUBMIT NA BA? HINDI KA NA MAKAKABALIK.")) {
+            return;
+        }
+    }
+    submitExam();
+}
+
+function submitExam() {
+    clearInterval(timerInterval);
+    let genedScore = 0, profedScore = 0;
+
+    questions.forEach((q, i) => {
+        if(answers[i] === q.a) {
+            if(i < 75) genedScore++;
+            else profedScore++;
+        }
+    });
+
+    let totalScore = genedScore + profedScore;
+    let percentage = (totalScore / 150 * 100).toFixed(2);
+    let genedPercent = (genedScore / 75 * 100).toFixed(2);
+    let profedPercent = (profedScore / 75 * 100).toFixed(2);
+
+    // PRC RULE: 75% overall + no subject below 50%
+    let passed = percentage >= 75 && genedPercent >= 50 && profedPercent >= 50;
+
+    document.querySelector('.quiz-area').style.display = 'none';
+    document.querySelector('.nav-buttons').style.display = 'none';
+    document.querySelector('.btn-submit').style.display = 'none';
+    document.querySelector('.legend').style.display = 'none';
+
+    let remarks = "";
+    if(passed) {
+        remarks = "🎉 CONGRATULATIONS! PASADO KA SA LET STANDARDS!";
+    } else {
+        if(percentage < 75) remarks = "😔 BAGSAK: Overall score below 75%";
+        else if(genedPercent < 50) remarks = "😔 BAGSAK: GenEd below 50%";
+        else if(profedPercent < 50) remarks = "😔 BAGSAK: ProfEd below 50%";
+    }
+
+    document.getElementById('resultArea').innerHTML = `
+        <div class="result-card ${passed? 'pass' : 'fail'}">
+            <h2>${remarks}</h2>
+            <div class="score-big">${totalScore}/150</div>
+            <h3>${percentage}% OVERALL RATING</h3>
+
+            <div class="breakdown">
+                <div style="border-color: ${genedPercent >= 50? '#38a169' : '#e53e3e'};">
+                    <h4>GENERAL EDUCATION</h4>
+                    <p style="font-size: 28px; font-weight: bold; margin: 10px 0;">${genedScore}/75</p>
+                    <p style="font-size: 20px;">${genedPercent}%</p>
+                    <p style="font-weight: bold; font-size: 16px; color: ${genedPercent >= 50? '#38a169' : '#e53e3e'}; margin-top: 10px;">
+                        ${genedPercent >= 50? '✅ PASADO' : '❌ BAGSAK - Need 50%'}
+                    </p>
+                    <p style="font-size: 12px; color: #718096; margin-top: 5px;">Need: 38/75 minimum</p>
+                </div>
+                <div style="border-color: ${profedPercent >= 50? '#38a169' : '#e53e3e'};">
+                    <h4>PROFESSIONAL EDUCATION</h4>
+                    <p style="font-size: 28px; font-weight: bold; margin: 10px 0;">${profedScore}/75</p>
+                    <p style="font-size: 20px;">${profedPercent}%</p>
+                    <p style="font-weight: bold; font-size: 16px; color: ${profedPercent >= 50? '#38a169' : '#e53e3e'}; margin-top: 10px;">
+                        ${profedPercent >= 50? '✅ PASADO' : '❌ BAGSAK - Need 50%'}
+                    </p>
+                    <p style="font-size: 12px; color: #718096; margin-top: 5px;">Need: 38/75 minimum</p>
+                </div>
+            </div>
+
+            <div style="background: white; padding: 20px; border-radius: 8px; margin-top: 25px; text-align: left;">
+                <h4 style="margin-bottom: 15px;">📋 PRC Passing Standards:</h4>
+                <p>✓ <strong>General Average:</strong> 75% or higher (${totalScore >= 113? '✅ PASADO' : '❌ BAGSAK - Need 113/150'})</p>
+                <p>✓ <strong>No subject below 50%:</strong> (${genedPercent >= 50 && profedPercent >= 50? '✅ PASADO' : '❌ BAGSAK'})</p>
+                <br>
+                <p><strong>Your Result:</strong> ${percentage}% overall | GenEd ${genedPercent}% | ProfEd ${profedPercent}%</p>
+                <p><strong>Items Answered:</strong> ${Object.keys(answers).length}/150</p>
+                <p><strong>Time Used:</strong> ${formatTimeUsed()}</p>
+            </div>
+
+            <br>
+            <button onclick="location.reload()" style="background: #2b6cb0; color: white; padding: 15px 40px; font-size: 16px;">RETAKE EXAM</button>
+            <p style="margin-top: 15px; font-size: 13px; color: #718096;">Tip: Review mo yung REVIEWER.HTML para makita explanations ng mga mali mo.</p>
+        </div>
+    `;
+    document.getElementById('resultArea').classList.add('show');
+    window.scrollTo(0, 0);
+}
+
+function formatTimeUsed() {
+    const used = (4 * 60 * 60) - timeLeft;
+    const h = Math.floor(used / 3600);
+    const m = Math.floor((used % 3600) / 60);
+    const s = used % 60;
+    return `${h}h ${m}m ${s}s`;
+}
+
+// Add blinking animation for timer warning
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes blink {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.3; }
+    }
+`;
+document.head.appendChild(style);
+
+// Auto-start
+initQuiz();
+</script>
+</body>
+</html>
